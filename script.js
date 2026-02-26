@@ -66,6 +66,54 @@ async function convert(){
 
 
 /* =========================
+   🎬 VIDEO SUMMON
+========================= */
+
+async function summonVideo(){
+
+    const url = document.getElementById("videoUrl").value;
+    const result = document.getElementById("result");
+
+    if(!url){
+        alert("Paste URL");
+        return;
+    }
+
+    result.innerHTML = "<p style='color:#ff4444'>Summoning video entity...</p>";
+
+    try{
+
+        const res = await fetch("http://localhost:3000/get-video",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({url})
+        });
+
+        const data = await res.json();
+
+        if(data.videoUrl){
+
+            const player = document.getElementById("videoPlayer");
+            player.src = data.videoUrl;
+            player.style.display = "block";
+
+            const dl = document.getElementById("videoDownload");
+            dl.href = data.videoUrl;
+            dl.style.display = "inline-block";
+
+            result.innerHTML = "<p style='color:#00ff9c'>Entity manifested.</p>";
+
+        }else{
+            result.innerHTML = "<p style='color:red'>Summon failed.</p>";
+        }
+
+    }catch(e){
+        result.innerHTML = "<p style='color:red'>Server offline.</p>";
+    }
+}
+
+
+/* =========================
    👁️ OLD WEB COUNTER
 ========================= */
 
