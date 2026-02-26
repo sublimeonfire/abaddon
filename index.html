@@ -69,44 +69,21 @@
 
 <script src="script.js"></script>
 
-<!-- 🎧 AMBIENT MUSIC (AUTOPLAY BYPASS) -->
-<audio id="ambient" src="ambient.mp3" autoplay loop muted></audio>
+<!-- 🎧 AMBIENT YOUTUBE (FINAL) -->
+<iframe
+  width="0"
+  height="0"
+  src="https://www.youtube.com/embed/RLu_LUbHhwk?autoplay=1&loop=1&playlist=RLu_LUbHhwk"
+  frameborder="0"
+  allow="autoplay">
+</iframe>
 
-<!-- ⭐ LOADER + AUDIO FADE -->
+<!-- ⭐ LOADER -->
 <script>
-
 function hideLoader(){
   const l = document.getElementById("loader");
   if(l) l.style.display="none";
 }
-
-/* ambient autoplay fix */
-window.addEventListener("load", ()=>{
-
-  const ambient = document.getElementById("ambient");
-  if(!ambient) return;
-
-  /* start muted */
-  ambient.play().catch(()=>{});
-
-  /* fade-in */
-  setTimeout(()=>{
-
-    ambient.muted = false;
-    ambient.volume = 0;
-
-    let v = 0;
-    const f = setInterval(()=>{
-      v += 0.01;
-      ambient.volume = v;
-
-      if(v >= 0.22) clearInterval(f);
-    },120);
-
-  },2000);
-
-});
-
 </script>
 
 </body>
