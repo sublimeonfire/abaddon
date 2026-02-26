@@ -43,6 +43,15 @@ window.addEventListener("DOMContentLoaded",()=>{
     if(el) el.textContent=String(saved).padStart(6,"0")
 })
 
+/* fake global growth */
+setInterval(()=>{
+ let c=parseInt(localStorage.getItem("abaddon_count")||666)
+ c+=Math.floor(Math.random()*3)
+ localStorage.setItem("abaddon_count",c)
+ const el=document.getElementById("counter")
+ if(el) el.textContent=String(c).padStart(6,"0")
+},4000)
+
 /* =========================
    🔥 PREVIEW
 ========================= */
@@ -145,6 +154,56 @@ loop()
 }
 
 /* =========================
+   🔥 FILM GRAIN
+========================= */
+const grain=document.getElementById("grain")
+if(grain){
+ const gctx=grain.getContext("2d")
+ function resizeGrain(){
+  grain.width=innerWidth
+  grain.height=innerHeight
+ }
+ resizeGrain()
+ addEventListener("resize",resizeGrain)
+
+ function grainLoop(){
+  const img=gctx.createImageData(grain.width,grain.height)
+  for(let i=0;i<img.data.length;i+=4){
+    const v=Math.random()*255
+    img.data[i]=img.data[i+1]=img.data[i+2]=v
+    img.data[i+3]=20
+  }
+  gctx.putImageData(img,0,0)
+  requestAnimationFrame(grainLoop)
+ }
+ grainLoop()
+}
+
+/* =========================
+   🔥 RUNES CURSOR
+========================= */
+const runes=["✶","☽","⛧","✦","ᛟ"]
+addEventListener("mousemove",e=>{
+ if(Math.random()<.15){
+  const r=document.createElement("div")
+  r.textContent=runes[Math.floor(Math.random()*runes.length)]
+  r.style.position="fixed"
+  r.style.left=e.clientX+"px"
+  r.style.top=e.clientY+"px"
+  r.style.color="rgba(255,0,0,.35)"
+  r.style.pointerEvents="none"
+  r.style.transition="1s"
+  document.body.appendChild(r)
+
+  setTimeout(()=>{
+   r.style.transform="translateY(-20px)"
+   r.style.opacity=0
+   setTimeout(()=>r.remove(),1000)
+  })
+ }
+})
+
+/* =========================
    🔥 LORE
 ========================= */
 const loreTexts=[
@@ -164,6 +223,23 @@ logoWrap.addEventListener("mouseenter",()=>{
 }
 
 /* =========================
+   🔥 AUDIO AMBIENT
+========================= */
+const amb=document.getElementById("amb")
+addEventListener("click",()=>{
+ if(amb && amb.paused){
+  amb.volume=.2
+  amb.play()
+ }
+},{once:true})
+
+addEventListener("mousemove",e=>{
+ if(amb){
+  amb.playbackRate=1+(e.clientX/window.innerWidth)*.1
+ }
+})
+
+/* =========================
    🔥 CONVERT
 ========================= */
 async function convert(){
@@ -175,36 +251,38 @@ async function convert(){
  }
 
  const to=document.getElementById("toFormat").value
+ const scale=document.getElementById("resize")?.value/100 || 1
+
  result.innerHTML="<p style='color:#ff4444'>transmuting...</p>"
 
- /* ritual anim */
- const ritual=document.createElement("div")
- ritual.textContent="⛧"
- ritual.style.position="fixed"
- ritual.style.left="50%"
- ritual.style.top="50%"
- ritual.style.transform="translate(-50%,-50%)"
- ritual.style.fontSize="80px"
- ritual.style.color="rgba(255,0,0,.4)"
- ritual.style.pointerEvents="none"
- ritual.style.animation="spin 1.2s linear"
- document.body.appendChild(ritual)
- setTimeout(()=>ritual.remove(),1200)
+ const overlay=document.createElement("div")
+ overlay.style.position="fixed"
+ overlay.style.inset=0
+ overlay.style.background="rgba(0,0,0,.85)"
+ overlay.style.zIndex="9998"
+ overlay.style.display="flex"
+ overlay.style.alignItems="center"
+ overlay.style.justifyContent="center"
+ overlay.style.fontSize="60px"
+ overlay.style.color="rgba(255,0,0,.4)"
+ overlay.textContent="⛧"
+ overlay.style.animation="spin 2s linear"
+ document.body.appendChild(overlay)
+ setTimeout(()=>overlay.remove(),1800)
 
  let converted=[]
 
  for(const file of files){
-
   const img=new Image()
   img.src=URL.createObjectURL(file)
 
   await new Promise(res=>{
     img.onload=()=>{
       const canvas=document.createElement("canvas")
-      canvas.width=img.width
-      canvas.height=img.height
+      canvas.width=img.width*scale
+      canvas.height=img.height*scale
       const ctx=canvas.getContext("2d")
-      ctx.drawImage(img,0,0)
+      ctx.drawImage(img,0,0,canvas.width,canvas.height)
 
       let mime="image/png"
       if(to==="jpg") mime="image/jpeg"
@@ -233,6 +311,13 @@ async function convert(){
    a.style.color="#00ff9c"
    result.appendChild(a)
  })
+
+ /* logs */
+ const logs=document.getElementById("logs")
+ if(logs){
+  const d=new Date().toLocaleTimeString()
+  logs.innerHTML+="<div>> "+d+" entity processed</div>"
+ }
 
  updateCounter(converted.length)
  toast("ritual completed")
