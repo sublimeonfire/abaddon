@@ -10,9 +10,21 @@ body{
     display:flex;
     align-items:center;
     justify-content:center;
+    overflow:hidden;
 }
 
-/* 🔥 LOADER INVOCATION */
+/* 🔥 CHAMAS ATMOSFÉRICAS */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:url("https://i.imgur.com/6IUB9Ck.gif") center/cover no-repeat;
+    opacity:.18;
+    mix-blend-mode:screen;
+    pointer-events:none;
+}
+
+/* 🔥 LOADER */
 #loader{
     position:fixed;
     inset:0;
@@ -28,7 +40,7 @@ body{
 
 #loader h1{
     font-size:48px;
-    text-shadow:0 0 30px red;
+    text-shadow:0 0 25px red;
     animation:glitch 1.5s infinite;
 }
 
@@ -47,22 +59,37 @@ body{
   100%{transform:translate(0)}
 }
 
-/* 🔥 CONTAINER */
+/* 🔥 CONTAINER BARROCO */
 .container{
     text-align:center;
-    border:3px solid #ff0000;
-    padding:40px;
-    box-shadow:0 0 25px red;
-    width:420px;
-    background:rgba(0,0,0,0.65);
-    backdrop-filter:blur(3px);
+    padding:55px 45px;
+    width:450px;
+    background:#050000;
+    border:8px double #6b0000;
+    box-shadow:
+      0 0 35px #ff000040,
+      inset 0 0 35px #2a0000;
+    position:relative;
 }
+
+/* ornamentos */
+.container::before,
+.container::after{
+    content:"✦";
+    position:absolute;
+    color:#5a0000;
+    font-size:24px;
+}
+.container::before{top:8px;left:12px;}
+.container::after{bottom:8px;right:12px;}
 
 /* 🔥 HOVER RITUAL */
 .ritual:hover{
-    box-shadow:0 0 60px red, inset 0 0 20px #550000;
+    box-shadow:
+      0 0 70px #ff000055,
+      inset 0 0 40px #450000;
     transform:scale(1.02);
-    transition:.3s;
+    transition:.35s;
 }
 
 /* 🔥 LOGO */
@@ -72,36 +99,15 @@ body{
 }
 
 .logo{
-  width:210px;
+  width:210pxx;
   margin-bottom:10px;
-  filter:drop-shadow(0 0 25px red);
-  animation:pulse 3s infinite;
+  animation:float 6s ease-in-out infinite;
 }
 
-@keyframes pulse{
-  0%{filter:drop-shadow(0 0 15px red)}
-  50%{filter:drop-shadow(0 0 40px red)}
-  100%{filter:drop-shadow(0 0 15px red)}
-}
-
-/* 🔥 OLHOS */
-.eyes span{
-    position:absolute;
-    width:14px;
-    height:14px;
-    background:red;
-    border-radius:50%;
-    box-shadow:0 0 15px red;
-    animation:blink 4s infinite;
-}
-
-/* POSIÇÕES (ajustáveis se precisar) */
-.eyes span:nth-child(1){ left:78px; top:72px; }
-.eyes span:nth-child(2){ left:118px; top:72px; }
-
-@keyframes blink{
-  0%,90%,100%{opacity:1}
-  95%{opacity:0}
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+  100%{transform:translateY(0)}
 }
 
 /* 🔥 FUMAÇA */
@@ -109,7 +115,7 @@ body{
     position:absolute;
     width:6px;
     height:18px;
-    background:rgba(255,255,255,0.25);
+    background:rgba(255,255,255,0.22);
     border-radius:50%;
     filter:blur(4px);
     animation:smoke 4s infinite;
@@ -121,14 +127,14 @@ body{
 
 @keyframes smoke{
   0%{transform:translateY(0);opacity:.3}
-  50%{opacity:.15}
+  50%{opacity:.12}
   100%{transform:translateY(-40px);opacity:0}
 }
 
 /* 🔥 TEXT */
 .title{
     font-size:42px;
-    letter-spacing:3px;
+    letter-spacing:4px;
 }
 
 .subtitle{
@@ -169,33 +175,19 @@ a.download{
     padding:10px;
 }
 
-/* 🔥 CREATOR */
+/* 🔥 RANSOM TEXT */
 .creator{
   margin-top:30px;
-  border-top:1px solid #330000;
-  padding-top:20px;
+  border-top:1px solid #2b0000;
+  padding-top:18px;
 }
 
 .creator span{
   color:#ff0000;
-  text-shadow:0 0 15px red;
 }
 
-.creator .wine{
-  font-size:12px;
-  color:#888;
-  margin:8px 0;
-}
-
-.creator a{
-  color:#ff2a2a;
-  text-decoration:none;
-  border:1px solid red;
-  padding:6px 14px;
-}
-
-.creator a:hover{
-  background:red;
-  color:black;
-  box-shadow:0 0 15px red;
+.pay{
+  color:#d0d0d0;
+  font-size:13px;
+  margin-top:6px;
 }
