@@ -1,12 +1,17 @@
-# WEBP → PNG Hacker Style
+# 🔥 ABADDON — WEBP → PNG Ritual Converter
 
-Simple WEBP to PNG converter with hacker aesthetic UI.
+ABADDON is a dark, client-side image conversion gateway where WebP files undergo transformation and emerge reborn as PNG.
 
-## Features
-- Client-side conversion
-- No upload
-- Works offline
-- Hacker UI
+Built with a minimalist hacker aesthetic and infernal atmosphere, the ritual occurs entirely within your browser — no uploads, no traces, no witnesses.
 
-## Deploy
-Open index.html or use GitHub Pages.
+## ✦ Features
+
+* Multi-file WebP → PNG conversion
+* Local processing (zero server interaction)
+* Automatic ZIP archive generation
+* Offline capable
+* Dark hacker / occult UI experience
+
+## ✦ Deploy
+
+Open `index.html` locally or deploy via GitHub Pages to summon ABADDON online.
