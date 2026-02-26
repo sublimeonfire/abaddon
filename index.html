@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="style.css?v=7">
 
   <!-- favicon -->
   <link rel="icon" href="favicon.png">
@@ -54,6 +54,32 @@
 
   <div id="result"></div>
 
+
+  <!-- ================= VIDEO RITUAL ================= -->
+
+  <div class="video-ritual">
+
+    <p class="subtitle">reddit / twitter video ritual</p>
+
+    <input
+      id="videoUrl"
+      placeholder="paste video url..."
+      class="video-input"
+    >
+
+    <button onclick="summonVideo()">SUMMON VIDEO</button>
+
+    <div class="video-wrap">
+        <video id="videoPlayer" controls></video>
+    </div>
+
+    <a id="videoDownload" download>
+        <button>DOWNLOAD MP4</button>
+    </a>
+
+  </div>
+
+
   <!-- ⭐ VISITOR COUNTER -->
   <div class="counter">
     VISITORS: <span id="counter">000666</span>
@@ -69,11 +95,11 @@
 
 <script src="script.js"></script>
 
-<!-- 🎧 AMBIENT YOUTUBE (FINAL) -->
+<!-- 🎧 AMBIENT YOUTUBE (WORKING AUTOPLAY LOOP) -->
 <iframe
   width="0"
   height="0"
-  src="https://www.youtube.com/embed/RLu_LUbHhwk?autoplay=1&loop=1&playlist=RLu_LUbHhwk"
+  src="https://www.youtube.com/embed/aVt1Kkm0CSY?autoplay=1&mute=1&loop=1&playlist=aVt1Kkm0CSY"
   frameborder="0"
   allow="autoplay">
 </iframe>
