@@ -1,10 +1,41 @@
-services:
-  - type: web
-    name: abaddon
-    env: node
-    buildCommand: |
-      npm install
-      apt-get update
-      apt-get install -y ffmpeg
-      pip install yt-dlp
-    startCommand: node server.js
+const express = require("express")
+const cors = require("cors")
+const { exec } = require("child_process")
+
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+
+app.post("/get-video",(req,res)=>{
+
+    const { url } = req.body
+    if(!url) return res.json({error:true})
+
+    console.log("Resolving:", url)
+
+    // ⭐ pega melhor video+audio direto (SEM baixar / SEM ffmpeg)
+    exec(`yt-dlp -f "bv*+ba/b" -g "${url}"`, (err, stdout)=>{
+
+        if(err){
+            console.log(err)
+            return res.json({error:true})
+        }
+
+        const lines = stdout.trim().split("\n")
+
+        // normalmente video + audio
+        if(lines.length >= 2){
+            res.json({
+                video: lines[0],
+                audio: lines[1]
+            })
+        }else{
+            res.json({
+                video: lines[0]
+            })
+        }
+    })
+})
+
+app.listen(3000,()=>console.log("🔥 ABADDON backend running on 3000"))
