@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
 
   <!-- favicon -->
   <link rel="icon" href="favicon.png">
@@ -26,19 +26,15 @@
   <p>descending into inferno...</p>
 </div>
 
-
 <!-- ⭐ WARNING OLD WEB -->
 <div class="warning blink">
   WARNING: THIS SITE IS NOT INDEXED • ACCESS LOGGED
 </div>
 
-
 <div class="container ritual">
 
   <!-- 😈 LOGO -->
   <div class="logo-wrap">
-
-    <!-- ⭐ LOGO LOCAL + loader hide -->
     <img class="logo" src="logo.png" onload="hideLoader()">
 
     <div class="smoke">
@@ -46,7 +42,6 @@
       <span></span>
       <span></span>
     </div>
-
   </div>
 
   <h1 class="title blink">ABADDON</h1>
@@ -74,16 +69,44 @@
 
 <script src="script.js"></script>
 
-<!-- AUDIO -->
-<audio id="whisper" src="whisper.mp3" preload="auto"></audio>
-<audio id="ambient" src="ambient.mp3" preload="auto" loop></audio>
+<!-- 🎧 AMBIENT MUSIC (AUTOPLAY BYPASS) -->
+<audio id="ambient" src="ambient.mp3" autoplay loop muted></audio>
 
-<!-- ⭐ LOADER FALLBACK -->
+<!-- ⭐ LOADER + AUDIO FADE -->
 <script>
+
 function hideLoader(){
   const l = document.getElementById("loader");
   if(l) l.style.display="none";
 }
+
+/* ambient autoplay fix */
+window.addEventListener("load", ()=>{
+
+  const ambient = document.getElementById("ambient");
+  if(!ambient) return;
+
+  /* start muted */
+  ambient.play().catch(()=>{});
+
+  /* fade-in */
+  setTimeout(()=>{
+
+    ambient.muted = false;
+    ambient.volume = 0;
+
+    let v = 0;
+    const f = setInterval(()=>{
+      v += 0.01;
+      ambient.volume = v;
+
+      if(v >= 0.22) clearInterval(f);
+    },120);
+
+  },2000);
+
+});
+
 </script>
 
 </body>
