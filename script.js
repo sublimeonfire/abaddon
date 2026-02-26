@@ -104,7 +104,7 @@ async function initAudio(){
 
   ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-  /* WHISPER GRAPH */
+  /* WHISPER */
   const whisperSource = ctx.createMediaElementSource(whisper);
   panner = ctx.createStereoPanner();
   whisperGain = ctx.createGain();
@@ -113,7 +113,7 @@ async function initAudio(){
   panner.connect(whisperGain);
   whisperGain.connect(ctx.destination);
 
-  /* AMBIENT GRAPH + REVERB */
+  /* AMBIENT + REVERB */
   const ambientSource = ctx.createMediaElementSource(ambient);
 
   const reverb = ctx.createConvolver();
@@ -140,7 +140,7 @@ async function initAudio(){
 
 
 /* =========================
-   🎧 AMBIENT START
+   🎧 AMBIENT FADE
 ========================= */
 
 function fadeInAmbient(){
@@ -174,7 +174,7 @@ function playWhisper(){
 
   if(!whisperGain) return;
 
-  ambient.volume = 0.08; // duck cinematic
+  ambient.volume = 0.08;
 
   const pan = (Math.random()*2)-1;
   panner.pan.value = pan;
@@ -206,20 +206,23 @@ setInterval(()=>{
 
 
 /* =========================
-   ⭐ AUTOPLAY UNLOCK
+   ⭐ GLOBAL AUDIO UNLOCK (FIX)
 ========================= */
 
-async function unlock(){
+async function forceUnlock(){
 
   await initAudio();
 
-  if(ctx.state === "suspended") await ctx.resume();
+  if(ctx.state === "suspended"){
+      try{ await ctx.resume(); }catch(e){}
+  }
 
-  fadeInAmbient();
+  if(ambient && ambient.paused){
+      fadeInAmbient();
+  }
 }
 
-window.addEventListener("load", ()=>{
-  setTimeout(unlock,2500);
+/* qualquer interação destrava */
+["click","mousemove","keydown","touchstart"].forEach(evt=>{
+  document.addEventListener(evt, forceUnlock, {once:true});
 });
-
-document.addEventListener("click", unlock, {once:true});
