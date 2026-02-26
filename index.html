@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <title>ABADDON — WEBP → PNG</title>
 
+  <!-- OLD WEB FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 
   <!-- favicon -->
   <link rel="icon" href="favicon.png">
@@ -17,21 +20,26 @@
 
 <body>
 
-<!-- 🔥 LOADING / INVOCATION -->
+<!-- 🔥 LOADING -->
 <div id="loader">
-  <h1>ABADDON</h1>
+  <h1 class="blink">ABADDON</h1>
   <p>descending into inferno...</p>
+</div>
+
+
+<!-- ⭐ WARNING OLD WEB -->
+<div class="warning blink">
+  WARNING: THIS SITE IS NOT INDEXED • ACCESS LOGGED
 </div>
 
 
 <div class="container ritual">
 
-  <!-- 😈 LOGO ABADDON -->
+  <!-- 😈 LOGO -->
   <div class="logo-wrap">
 
     <img class="logo" src="https://i.imgur.com/dsvGMok.png">
 
-    <!-- 🔥 fumaça vela -->
     <div class="smoke">
       <span></span>
       <span></span>
@@ -40,7 +48,7 @@
 
   </div>
 
-  <h1 class="title">ABADDON</h1>
+  <h1 class="title blink">ABADDON</h1>
   <p class="subtitle">webp → png ritual converter</p>
 
   <div class="upload-box">
@@ -50,7 +58,12 @@
 
   <div id="result"></div>
 
-  <!-- 🔥 RITUAL TEXT -->
+  <!-- ⭐ VISITOR COUNTER -->
+  <div class="counter">
+    VISITORS: <span id="counter">000666</span>
+  </div>
+
+  <!-- RITUAL TEXT -->
   <div class="creator">
     <p>From: <span>$ublime</span></p>
     <p class="pay">PIX: vinikleine90843@hotmail.com</p>
@@ -60,10 +73,8 @@
 
 <script src="script.js"></script>
 
-<!-- 🎧 WHISPER -->
+<!-- AUDIO -->
 <audio id="whisper" src="whisper.mp3" preload="auto"></audio>
-
-<!-- 🎧 AMBIENT LOCAL -->
 <audio id="ambient" src="ambient.mp3" preload="auto" loop></audio>
 
 </body>
