@@ -86,143 +86,22 @@ if(counterEl){
 
 
 /* =========================
-   😈 AUDIO ENGINE SAFE
+   🎧 SIMPLE AMBIENT MUSIC
 ========================= */
 
-const whisper = document.getElementById("whisper");
 const ambient = document.getElementById("ambient");
 
-let ctx;
-let whisperGain;
-let panner;
-let initialized = false;
-
-async function initAudio(){
-
-  if(initialized) return;
-  initialized = true;
-
-  ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-  /* WHISPER */
-  const whisperSource = ctx.createMediaElementSource(whisper);
-  panner = ctx.createStereoPanner();
-  whisperGain = ctx.createGain();
-
-  whisperSource.connect(panner);
-  panner.connect(whisperGain);
-  whisperGain.connect(ctx.destination);
-
-  /* AMBIENT + REVERB */
-  const ambientSource = ctx.createMediaElementSource(ambient);
-
-  const reverb = ctx.createConvolver();
-  const reverbGain = ctx.createGain();
-  reverbGain.gain.value = 0.08;
-
-  const len = ctx.sampleRate * 2;
-  const impulse = ctx.createBuffer(2, len, ctx.sampleRate);
-
-  for(let ch=0; ch<2; ch++){
-    const data = impulse.getChannelData(ch);
-    for(let i=0;i<len;i++){
-      data[i]=(Math.random()*2-1)*(1-i/len);
+/* tenta autoplay */
+window.addEventListener("load", ()=>{
+    if(ambient){
+        ambient.volume = 0.22;
+        ambient.play().catch(()=>{});
     }
-  }
+});
 
-  reverb.buffer = impulse;
-
-  ambientSource.connect(ctx.destination);
-  ambientSource.connect(reverb);
-  reverb.connect(reverbGain);
-  reverbGain.connect(ctx.destination);
-}
-
-
-/* =========================
-   🎧 AMBIENT FADE
-========================= */
-
-function fadeInAmbient(){
-
-    if(!ambient) return;
-
-    ambient.volume = 0;
-    ambient.play().catch(()=>{});
-
-    let v = 0;
-
-    const f = setInterval(()=>{
-        v += 0.01;
-        ambient.volume = v;
-        if(v >= 0.22) clearInterval(f);
-    },120);
-}
-
-
-/* =========================
-   👁️ WHISPER SYSTEM
-========================= */
-
-let lastMove = Date.now();
-
-function randomDelay(){
-  return 5000 + Math.random()*10000;
-}
-
-function playWhisper(){
-
-  if(!whisperGain) return;
-
-  ambient.volume = 0.08;
-
-  const pan = (Math.random()*2)-1;
-  panner.pan.value = pan;
-
-  whisperGain.gain.value = 0.18 + Math.random()*0.22;
-  whisper.currentTime = Math.random()*2;
-
-  whisper.play();
-
-  setTimeout(()=>{
-    ambient.volume = 0.22;
-  },3000);
-}
-
+/* fallback (primeiro movimento) */
 document.addEventListener("mousemove", ()=>{
-  lastMove = Date.now();
-});
-
-setInterval(()=>{
-
-  const idle = Date.now() - lastMove;
-
-  if(idle > randomDelay()){
-      playWhisper();
-      lastMove = Date.now();
-  }
-
-},2000);
-
-
-/* =========================
-   ⭐ GLOBAL AUDIO UNLOCK (FIX)
-========================= */
-
-async function forceUnlock(){
-
-  await initAudio();
-
-  if(ctx.state === "suspended"){
-      try{ await ctx.resume(); }catch(e){}
-  }
-
-  if(ambient && ambient.paused){
-      fadeInAmbient();
-  }
-}
-
-/* qualquer interação destrava */
-["click","mousemove","keydown","touchstart"].forEach(evt=>{
-  document.addEventListener(evt, forceUnlock, {once:true});
-});
+    if(ambient && ambient.paused){
+        ambient.play().catch(()=>{});
+    }
+},{once:true});
