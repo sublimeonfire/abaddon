@@ -66,7 +66,7 @@ async function convert(){
 
 
 /* =========================
-   🎬 VIDEO SUMMON (BACKEND)
+   🎬 VIDEO SUMMON (RENDER BACKEND)
 ========================= */
 
 async function summonVideo(){
@@ -83,7 +83,7 @@ async function summonVideo(){
 
     try{
 
-        const res = await fetch("http://localhost:3000/get-video",{
+        const res = await fetch("https://abaddon-y6h7.onrender.com/get-video",{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body: JSON.stringify({url})
@@ -93,8 +93,8 @@ async function summonVideo(){
 
         if(data.videoUrl){
 
-            // abre player com download
-            window.open(data.videoUrl, "_blank")
+            // ⭐ abre nova aba com player do navegador (download + play automático)
+            window.open(`https://abaddon-y6h7.onrender.com${data.videoUrl}`, "_blank")
 
             result.innerHTML = "<p style='color:#00ff9c'>Entity manifested.</p>"
 
@@ -103,6 +103,7 @@ async function summonVideo(){
         }
 
     }catch(e){
+        console.log(e)
         result.innerHTML = "<p style='color:red'>Backend offline.</p>"
     }
 }
