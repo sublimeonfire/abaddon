@@ -14,12 +14,10 @@ body{
     cursor:crosshair;
 }
 
-/* 🔥 FUNDO LIMPO (REMOVIDO GIF BUGADO) */
-body::before{
-    display:none;
-}
+/* 🔥 FUNDO LIMPO */
+body::before{ display:none; }
 
-/* 🔥 CRT SCANLINES + VIGNETTE */
+/* 🔥 CRT */
 body::after{
   content:"";
   position:fixed;
@@ -37,13 +35,8 @@ body::after{
 }
 
 /* 🔥 BLINK */
-.blink{
-  animation:blink 1.2s steps(2,start) infinite;
-}
-
-@keyframes blink{
-  to{visibility:hidden;}
-}
+.blink{ animation:blink 1.2s steps(2,start) infinite; }
+@keyframes blink{ to{visibility:hidden;} }
 
 /* 🔥 WARNING */
 .warning{
@@ -71,19 +64,16 @@ body::after{
     z-index:9999;
     animation:fade 3s forwards;
 }
-
 #loader h1{
     font-size:52px;
     text-shadow:0 0 25px red;
     animation:glitch 1.5s infinite;
 }
-
 @keyframes fade{
   0%{opacity:1}
   85%{opacity:1}
   100%{opacity:0;visibility:hidden}
 }
-
 @keyframes glitch{
   0%{transform:translate(0)}
   20%{transform:translate(-2px,2px)}
@@ -106,8 +96,6 @@ body::after{
       inset 0 0 25px #2a0000;
     position:relative;
 }
-
-/* ornamentos */
 .container::before,
 .container::after{
     content:"✦";
@@ -118,7 +106,6 @@ body::after{
 .container::before{top:8px;left:12px;}
 .container::after{bottom:8px;right:12px;}
 
-/* 🔥 HOVER */
 .ritual:hover{
     box-shadow:
       0 0 50px #ff000055,
@@ -128,19 +115,13 @@ body::after{
 }
 
 /* 🔥 LOGO */
-.logo-wrap{
-    position:relative;
-    display:inline-block;
-}
-
+.logo-wrap{ position:relative; display:inline-block; }
 .logo{
   width:200px;
   max-width:100%;
-  height:auto;
   margin-bottom:15px;
   animation:float 6s ease-in-out infinite;
 }
-
 @keyframes float{
   0%{transform:translateY(0)}
   50%{transform:translateY(-6px)}
@@ -157,11 +138,9 @@ body::after{
     filter:blur(4px);
     animation:smoke 4s infinite;
 }
-
 .smoke span:nth-child(1){ left:95px; top:10px; }
 .smoke span:nth-child(2){ left:100px; top:5px; animation-delay:1s;}
 .smoke span:nth-child(3){ left:88px; top:0px; animation-delay:2s;}
-
 @keyframes smoke{
   0%{transform:translateY(0);opacity:.3}
   50%{opacity:.12}
@@ -169,21 +148,11 @@ body::after{
 }
 
 /* 🔥 TEXT */
-.title{
-    font-size:48px;
-    letter-spacing:6px;
-}
-
-.subtitle{
-    color:#aaa;
-    margin-bottom:30px;
-}
+.title{ font-size:48px; letter-spacing:6px; }
+.subtitle{ color:#aaa; margin-bottom:30px; }
 
 /* 🔥 INPUT */
-.upload-box input{
-    margin-bottom:15px;
-    color:white;
-}
+.upload-box input{ margin-bottom:15px; color:white; }
 
 /* 🔥 BUTTON */
 button{
@@ -196,21 +165,40 @@ button{
     font-weight:bold;
     font-family:'VT323', monospace;
 }
-
 button:hover{
     background:red;
     color:black;
     box-shadow:0 0 15px red;
 }
 
-/* 🔥 DOWNLOAD */
-a.download{
-    display:inline-block;
-    margin-top:20px;
-    color:#00ff9c;
-    text-decoration:none;
-    border:1px solid #00ff9c;
-    padding:10px;
+/* 🔥 VIDEO RITUAL */
+.video-ritual{
+  margin-top:35px;
+  border-top:1px solid #2b0000;
+  padding-top:25px;
+}
+.video-input{
+  width:80%;
+  padding:8px;
+  background:black;
+  border:1px solid #6b0000;
+  color:#ff4444;
+  font-family:'VT323', monospace;
+  margin-bottom:12px;
+}
+.video-input:focus{
+  outline:none;
+  box-shadow:0 0 10px red;
+}
+.video-wrap{ margin-top:15px; }
+#videoPlayer{
+  width:100%;
+  display:none;
+  border:2px solid #6b0000;
+}
+#videoDownload{
+  display:none;
+  margin-top:12px;
 }
 
 /* 🔥 COUNTER */
@@ -220,25 +208,16 @@ a.download{
   color:#ff4444;
   letter-spacing:3px;
 }
-
 #counter{
   color:#ff0000;
   text-shadow:0 0 8px red;
 }
 
-/* 🔥 RANSOM TEXT */
+/* 🔥 CREATOR */
 .creator{
   margin-top:30px;
   border-top:1px solid #2b0000;
   padding-top:18px;
 }
-
-.creator span{
-  color:#ff0000;
-}
-
-.pay{
-  color:#d0d0d0;
-  font-size:16px;
-  margin-top:6px;
-}
+.creator span{ color:#ff0000; }
+.pay{ color:#d0d0d0; font-size:16px; margin-top:6px; }
