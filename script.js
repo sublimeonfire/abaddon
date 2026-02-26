@@ -71,7 +71,6 @@ async function convert(){
 
 const audio = document.getElementById("whisper");
 
-/* WEB AUDIO */
 const ctx = new (window.AudioContext || window.webkitAudioContext)();
 const source = ctx.createMediaElementSource(audio);
 const panner = ctx.createStereoPanner();
@@ -81,15 +80,12 @@ source.connect(panner);
 panner.connect(gain);
 gain.connect(ctx.destination);
 
-/* MOUSE STATE */
 let lastMove = Date.now();
 
-/* RANDOM DELAY */
 function randomDelay(){
-  return 5000 + Math.random()*10000; // 5s - 15s
+  return 5000 + Math.random()*10000;
 }
 
-/* PLAY WHISPER */
 function playWhisper(){
 
   const pan = (Math.random()*2)-1;
@@ -104,12 +100,10 @@ function playWhisper(){
   audio.play();
 }
 
-/* DETECT MOVE */
 document.addEventListener("mousemove", ()=>{
   lastMove = Date.now();
 });
 
-/* CREEPY LOOP */
 setInterval(()=>{
 
   const idle = Date.now() - lastMove;
@@ -120,3 +114,48 @@ setInterval(()=>{
   }
 
 },2000);
+
+
+/* =========================
+   🎧 AMBIENT SYSTEM
+========================= */
+
+const ambient = document.getElementById("ambient");
+
+/* fade in ambient */
+function fadeInAmbient(){
+
+    if(!ambient) return;
+
+    ambient.volume = 0;
+
+    ambient.play().catch(()=>{});
+
+    let v = 0;
+
+    const f = setInterval(()=>{
+        v += 0.01;
+        ambient.volume = v;
+        if(v >= 0.18) clearInterval(f);
+    },120);
+}
+
+/* start after loader */
+window.addEventListener("load", ()=>{
+
+    setTimeout(()=>{
+
+        if(ctx.state === "suspended") ctx.resume();
+
+        fadeInAmbient();
+
+    },3000);
+
+});
+
+/* unlock autoplay */
+document.addEventListener("click", ()=>{
+    if(ambient && ambient.paused){
+        fadeInAmbient();
+    }
+},{once:true});
