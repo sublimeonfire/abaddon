@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
+/* 🔥 BASE */
 body{
     margin:0;
     background:#000;
@@ -11,14 +12,120 @@ body{
     justify-content:center;
 }
 
+/* 🔥 LOADER INVOCATION */
+#loader{
+    position:fixed;
+    inset:0;
+    background:black;
+    color:red;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    animation:fade 3s forwards;
+}
+
+#loader h1{
+    font-size:48px;
+    text-shadow:0 0 30px red;
+    animation:glitch 1.5s infinite;
+}
+
+@keyframes fade{
+  0%{opacity:1}
+  85%{opacity:1}
+  100%{opacity:0;visibility:hidden}
+}
+
+@keyframes glitch{
+  0%{transform:translate(0)}
+  20%{transform:translate(-2px,2px)}
+  40%{transform:translate(2px,-2px)}
+  60%{transform:translate(-1px,1px)}
+  80%{transform:translate(1px,-1px)}
+  100%{transform:translate(0)}
+}
+
+/* 🔥 CONTAINER */
 .container{
     text-align:center;
     border:3px solid #ff0000;
     padding:40px;
     box-shadow:0 0 25px red;
     width:420px;
+    background:rgba(0,0,0,0.65);
+    backdrop-filter:blur(3px);
 }
 
+/* 🔥 HOVER RITUAL */
+.ritual:hover{
+    box-shadow:0 0 60px red, inset 0 0 20px #550000;
+    transform:scale(1.02);
+    transition:.3s;
+}
+
+/* 🔥 LOGO */
+.logo-wrap{
+    position:relative;
+    display:inline-block;
+}
+
+.logo{
+  width:210px;
+  margin-bottom:10px;
+  filter:drop-shadow(0 0 25px red);
+  animation:pulse 3s infinite;
+}
+
+@keyframes pulse{
+  0%{filter:drop-shadow(0 0 15px red)}
+  50%{filter:drop-shadow(0 0 40px red)}
+  100%{filter:drop-shadow(0 0 15px red)}
+}
+
+/* 🔥 OLHOS */
+.eyes span{
+    position:absolute;
+    width:14px;
+    height:14px;
+    background:red;
+    border-radius:50%;
+    box-shadow:0 0 15px red;
+    animation:blink 4s infinite;
+}
+
+/* POSIÇÕES (ajustáveis se precisar) */
+.eyes span:nth-child(1){ left:78px; top:72px; }
+.eyes span:nth-child(2){ left:118px; top:72px; }
+
+@keyframes blink{
+  0%,90%,100%{opacity:1}
+  95%{opacity:0}
+}
+
+/* 🔥 FUMAÇA */
+.smoke span{
+    position:absolute;
+    width:6px;
+    height:18px;
+    background:rgba(255,255,255,0.25);
+    border-radius:50%;
+    filter:blur(4px);
+    animation:smoke 4s infinite;
+}
+
+.smoke span:nth-child(1){ left:98px; top:10px; }
+.smoke span:nth-child(2){ left:104px; top:5px; animation-delay:1s;}
+.smoke span:nth-child(3){ left:92px; top:0px; animation-delay:2s;}
+
+@keyframes smoke{
+  0%{transform:translateY(0);opacity:.3}
+  50%{opacity:.15}
+  100%{transform:translateY(-40px);opacity:0}
+}
+
+/* 🔥 TEXT */
 .title{
     font-size:42px;
     letter-spacing:3px;
@@ -29,11 +136,13 @@ body{
     margin-bottom:30px;
 }
 
+/* 🔥 INPUT */
 .upload-box input{
     margin-bottom:15px;
     color:white;
 }
 
+/* 🔥 BUTTON */
 button{
     background:black;
     border:2px solid red;
@@ -50,6 +159,7 @@ button:hover{
     box-shadow:0 0 15px red;
 }
 
+/* 🔥 DOWNLOAD */
 a.download{
     display:inline-block;
     margin-top:20px;
@@ -57,4 +167,35 @@ a.download{
     text-decoration:none;
     border:1px solid #00ff9c;
     padding:10px;
+}
+
+/* 🔥 CREATOR */
+.creator{
+  margin-top:30px;
+  border-top:1px solid #330000;
+  padding-top:20px;
+}
+
+.creator span{
+  color:#ff0000;
+  text-shadow:0 0 15px red;
+}
+
+.creator .wine{
+  font-size:12px;
+  color:#888;
+  margin:8px 0;
+}
+
+.creator a{
+  color:#ff2a2a;
+  text-decoration:none;
+  border:1px solid red;
+  padding:6px 14px;
+}
+
+.creator a:hover{
+  background:red;
+  color:black;
+  box-shadow:0 0 15px red;
 }
