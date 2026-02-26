@@ -8,7 +8,6 @@ body{
     font-family:'VT323', monospace;
     min-height:100vh;
 
-    /* 🔥 IMPORTANTE → topo livre */
     display:flex;
     justify-content:center;
     align-items:flex-start;
@@ -173,34 +172,6 @@ button:hover{
     background:red;
     color:black;
     box-shadow:0 0 15px red;
-}
-
-/* 🔥 VIDEO RITUAL */
-.video-ritual{
-  margin-top:35px;
-  border-top:1px solid #2b0000;
-  padding-top:25px;
-}
-
-.video-input{
-  width:80%;
-  padding:8px;
-  background:black;
-  border:1px solid #6b0000;
-  color:#ff4444;
-  font-family:'VT323', monospace;
-  margin-bottom:12px;
-}
-
-.video-input:focus{
-  outline:none;
-  box-shadow:0 0 10px red;
-}
-
-/* 🔥 sem player fantasma */
-.video-wrap{
-  margin-top:10px;
-  min-height:0;
 }
 
 /* 🔥 COUNTER */
