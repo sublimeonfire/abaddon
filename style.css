@@ -13,11 +13,20 @@ body{
     padding-top:80px;
     overflow-x:hidden;
 
-    /* custom cursor */
     cursor:url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
 <line x1='16' y1='0' x2='16' y2='32' stroke='red' stroke-width='2'/>\
 <line x1='6' y1='10' x2='26' y2='10' stroke='red' stroke-width='2'/>\
+</svg>") 16 16, auto;
+}
+
+/* 🔥 HOVER CURSOR REACTIVE */
+button:hover,
+.logo:hover,
+#result img:hover{
+ cursor:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<circle cx='16' cy='16' r='6' stroke='red' fill='none' stroke-width='2'/>\
 </svg>") 16 16, auto;
 }
 
@@ -29,8 +38,14 @@ body{
   z-index:0;
 }
 
-/* 🔥 FUNDO LIMPO */
-body::before{ display:none; }
+/* 🔥 FILM GRAIN */
+#grain{
+ position:fixed;
+ inset:0;
+ pointer-events:none;
+ opacity:.08;
+ z-index:2;
+}
 
 /* 🔥 CRT */
 body::after{
@@ -152,25 +167,6 @@ body::after{
 }
 .logo-wrap:hover #lore{ opacity:1; }
 
-/* 🔥 FUMAÇA */
-.smoke span{
-    position:absolute;
-    width:6px;
-    height:18px;
-    background:rgba(255,255,255,0.22);
-    border-radius:50%;
-    filter:blur(4px);
-    animation:smoke 4s infinite;
-}
-.smoke span:nth-child(1){ left:95px; top:10px; }
-.smoke span:nth-child(2){ left:100px; top:5px; animation-delay:1s;}
-.smoke span:nth-child(3){ left:88px; top:0px; animation-delay:2s;}
-@keyframes smoke{
-  0%{transform:translateY(0);opacity:.3}
-  50%{opacity:.12}
-  100%{transform:translateY(-40px);opacity:0}
-}
-
 /* 🔥 BLOOD */
 .blood{
   position:absolute;
@@ -197,10 +193,6 @@ body::after{
   100%{height:0;opacity:0}
 }
 
-/* 🔥 TEXT */
-.title{ font-size:48px; letter-spacing:6px; }
-.subtitle{ color:#aaa; margin-bottom:30px; }
-
 /* 🔥 FORMAT SELECT */
 .format-select{
   display:flex;
@@ -215,9 +207,21 @@ body::after{
   font-family:'VT323', monospace;
 }
 
-/* 🔥 UPLOAD */
-.upload-box{ transition:.25s; }
-.upload-box input{ margin-bottom:15px; color:white; }
+/* 🔥 RESIZE SLIDER */
+#resize{
+ width:80%;
+ margin:10px auto;
+ display:block;
+ accent-color:red;
+}
+
+/* 🔥 LOGS */
+#logs{
+ margin-top:10px;
+ font-size:14px;
+ color:#ff4444;
+ opacity:.6;
+}
 
 /* 🔥 PREVIEW */
 #result img{
@@ -259,15 +263,6 @@ button:hover{
   color:#ff0000;
   text-shadow:0 0 8px red;
 }
-
-/* 🔥 CREATOR */
-.creator{
-  margin-top:30px;
-  border-top:1px solid #2b0000;
-  padding-top:18px;
-}
-.creator span{ color:#ff0000; }
-.pay{ color:#d0d0d0; font-size:16px; margin-top:6px; }
 
 /* 🔥 SPIN */
 @keyframes spin{
