@@ -9,8 +9,8 @@ const result = document.getElementById("result")
    🔥 TOAST
 ========================= */
 function toast(msg,color="#00ff9c"){
-    const t = document.createElement("div")
-    t.textContent = msg
+    const t=document.createElement("div")
+    t.textContent=msg
     t.style.position="fixed"
     t.style.bottom="20px"
     t.style.left="50%"
@@ -22,50 +22,46 @@ function toast(msg,color="#00ff9c"){
     t.style.fontFamily="VT323, monospace"
     t.style.zIndex="9999"
     t.style.boxShadow="0 0 15px red"
-
     document.body.appendChild(t)
     setTimeout(()=>t.remove(),2200)
 }
 
 /* =========================
-   🔥 COUNTER (REAL)
+   🔥 COUNTER
 ========================= */
 function updateCounter(qtd=1){
-    let count = localStorage.getItem("abaddon_count") || 666
-    count = parseInt(count) + qtd
+    let count=localStorage.getItem("abaddon_count")||666
+    count=parseInt(count)+qtd
     localStorage.setItem("abaddon_count",count)
-
-    const el = document.getElementById("counter")
-    if(el) el.textContent = String(count).padStart(6,"0")
+    const el=document.getElementById("counter")
+    if(el) el.textContent=String(count).padStart(6,"0")
 }
 
 window.addEventListener("DOMContentLoaded",()=>{
-    const saved = localStorage.getItem("abaddon_count") || 666
-    const el = document.getElementById("counter")
-    if(el) el.textContent = String(saved).padStart(6,"0")
+    const saved=localStorage.getItem("abaddon_count")||666
+    const el=document.getElementById("counter")
+    if(el) el.textContent=String(saved).padStart(6,"0")
 })
 
 /* =========================
-   🔥 PREVIEW GRID
+   🔥 PREVIEW
 ========================= */
 fileInput.addEventListener("change",previewFiles)
 
 function previewFiles(){
-    const files = [...fileInput.files]
+    const files=[...fileInput.files]
     if(!files.length) return
 
-    const grid = document.createElement("div")
+    const grid=document.createElement("div")
     grid.style.display="grid"
     grid.style.gridTemplateColumns="repeat(3,1fr)"
     grid.style.gap="10px"
     grid.style.marginBottom="20px"
 
     files.forEach(file=>{
-        const img = document.createElement("img")
-        img.src = URL.createObjectURL(file)
+        const img=document.createElement("img")
+        img.src=URL.createObjectURL(file)
         img.style.width="100%"
-        img.style.border="1px solid #300"
-        img.style.boxShadow="0 0 10px #300"
         grid.appendChild(img)
     })
 
@@ -74,9 +70,9 @@ function previewFiles(){
 }
 
 /* =========================
-   🔥 DRAG & DROP
+   🔥 DRAG DROP
 ========================= */
-const box = document.querySelector(".upload-box")
+const box=document.querySelector(".upload-box")
 
 ;["dragenter","dragover"].forEach(evt=>{
     box.addEventListener(evt,e=>{
@@ -93,63 +89,151 @@ const box = document.querySelector(".upload-box")
 })
 
 box.addEventListener("drop",e=>{
-    const dt = e.dataTransfer
-    fileInput.files = dt.files
+    fileInput.files=e.dataTransfer.files
     previewFiles()
 })
+
+/* =========================
+   🔥 OCCULT PARTICLES
+========================= */
+const canvas=document.getElementById("occultCanvas")
+if(canvas){
+const ctx=canvas.getContext("2d")
+
+function resize(){
+ canvas.width=innerWidth
+ canvas.height=innerHeight
+}
+resize()
+addEventListener("resize",resize)
+
+const symbols=["✶","☽","⛧","☿","✦","ᛟ"]
+
+const particles=Array.from({length:35}).map(()=>({
+ x:Math.random()*canvas.width,
+ y:Math.random()*canvas.height,
+ vx:(Math.random()-.5)*.2,
+ vy:(Math.random()-.5)*.2,
+ size:Math.random()*2+1,
+ life:Math.random()*200
+}))
+
+function loop(){
+ ctx.clearRect(0,0,canvas.width,canvas.height)
+
+ particles.forEach(p=>{
+  p.x+=p.vx
+  p.y+=p.vy
+  p.life--
+
+  ctx.fillStyle="rgba(255,0,0,.25)"
+  ctx.beginPath()
+  ctx.arc(p.x,p.y,p.size,0,Math.PI*2)
+  ctx.fill()
+
+  if(p.life<0){
+    ctx.fillStyle="rgba(255,0,0,.18)"
+    ctx.font="14px VT323"
+    ctx.fillText(symbols[Math.floor(Math.random()*symbols.length)],p.x,p.y)
+    p.life=200+Math.random()*200
+  }
+ })
+
+ requestAnimationFrame(loop)
+}
+loop()
+}
+
+/* =========================
+   🔥 LORE
+========================= */
+const loreTexts=[
+ "the gate is open",
+ "you are observed",
+ "entity acknowledged",
+ "ritual stabilized",
+ "signal received"
+]
+
+const lore=document.getElementById("lore")
+const logoWrap=document.querySelector(".logo-wrap")
+if(logoWrap && lore){
+logoWrap.addEventListener("mouseenter",()=>{
+ lore.textContent=loreTexts[Math.floor(Math.random()*loreTexts.length)]
+})
+}
 
 /* =========================
    🔥 CONVERT
 ========================= */
 async function convert(){
 
-    const files = [...fileInput.files]
-    if(!files.length){
-        toast("no entities selected","#ff4444")
-        return
-    }
+ const files=[...fileInput.files]
+ if(!files.length){
+  toast("no entities selected","#ff4444")
+  return
+ }
 
-    result.innerHTML="<p style='color:#ff4444'>converting...</p>"
+ const to=document.getElementById("toFormat").value
+ result.innerHTML="<p style='color:#ff4444'>transmuting...</p>"
 
-    let converted = []
+ /* ritual anim */
+ const ritual=document.createElement("div")
+ ritual.textContent="⛧"
+ ritual.style.position="fixed"
+ ritual.style.left="50%"
+ ritual.style.top="50%"
+ ritual.style.transform="translate(-50%,-50%)"
+ ritual.style.fontSize="80px"
+ ritual.style.color="rgba(255,0,0,.4)"
+ ritual.style.pointerEvents="none"
+ ritual.style.animation="spin 1.2s linear"
+ document.body.appendChild(ritual)
+ setTimeout(()=>ritual.remove(),1200)
 
-    for(const file of files){
+ let converted=[]
 
-        const img = new Image()
-        img.src = URL.createObjectURL(file)
+ for(const file of files){
 
-        await new Promise(res=>{
-            img.onload = ()=>{
-                const canvas = document.createElement("canvas")
-                canvas.width = img.width
-                canvas.height = img.height
-                const ctx = canvas.getContext("2d")
-                ctx.drawImage(img,0,0)
+  const img=new Image()
+  img.src=URL.createObjectURL(file)
 
-                canvas.toBlob(blob=>{
-                    converted.push({
-                        name:file.name.replace(".webp",".png"),
-                        blob
-                    })
-                    res()
-                },"image/png")
-            }
+  await new Promise(res=>{
+    img.onload=()=>{
+      const canvas=document.createElement("canvas")
+      canvas.width=img.width
+      canvas.height=img.height
+      const ctx=canvas.getContext("2d")
+      ctx.drawImage(img,0,0)
+
+      let mime="image/png"
+      if(to==="jpg") mime="image/jpeg"
+      if(to==="webp") mime="image/webp"
+      if(to==="bmp") mime="image/bmp"
+
+      canvas.toBlob(blob=>{
+        converted.push({
+          name:file.name.split(".")[0]+"."+to,
+          blob
         })
+        res()
+      },mime)
     }
+  })
+ }
 
-    result.innerHTML=""
+ result.innerHTML=""
 
-    converted.forEach(f=>{
-        const a = document.createElement("a")
-        a.href = URL.createObjectURL(f.blob)
-        a.download = f.name
-        a.textContent = "download "+f.name
-        a.style.display="block"
-        a.style.margin="6px"
-        a.style.color="#00ff9c"
-        result.appendChild(a)
-    })
+ converted.forEach(f=>{
+   const a=document.createElement("a")
+   a.href=URL.createObjectURL(f.blob)
+   a.download=f.name
+   a.textContent="download "+f.name
+   a.style.display="block"
+   a.style.color="#00ff9c"
+   result.appendChild(a)
+ })
 
-    updateCounter(converted.length)
-    toast("ritual completed")
+ updateCounter(converted.length)
+ toast("ritual completed")
 }
