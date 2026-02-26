@@ -83,25 +83,3 @@ if(counterEl){
         }
     },4000);
 }
-
-
-/* =========================
-   🎧 SIMPLE AMBIENT MUSIC
-========================= */
-
-const ambient = document.getElementById("ambient");
-
-/* tenta autoplay */
-window.addEventListener("load", ()=>{
-    if(ambient){
-        ambient.volume = 0.22;
-        ambient.play().catch(()=>{});
-    }
-});
-
-/* fallback (primeiro movimento) */
-document.addEventListener("mousemove", ()=>{
-    if(ambient && ambient.paused){
-        ambient.play().catch(()=>{});
-    }
-},{once:true});
