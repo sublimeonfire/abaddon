@@ -14,15 +14,9 @@ body{
     cursor:crosshair;
 }
 
-/* 🔥 CHAMAS + GRAIN */
+/* 🔥 FUNDO LIMPO (REMOVIDO GIF BUGADO) */
 body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:url("https://i.imgur.com/6IUB9Ck.gif") center/cover no-repeat;
-    opacity:.12;
-    mix-blend-mode:screen;
-    pointer-events:none;
+    display:none;
 }
 
 /* 🔥 CRT SCANLINES + VIGNETTE */
