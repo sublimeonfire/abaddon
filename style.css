@@ -7,14 +7,26 @@ body{
     color:#ff2a2a;
     font-family:'VT323', monospace;
     min-height:100vh;
-
     display:flex;
     justify-content:center;
     align-items:flex-start;
     padding-top:80px;
-
     overflow-x:hidden;
-    cursor:crosshair;
+
+    /* custom cursor */
+    cursor:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<line x1='16' y1='0' x2='16' y2='32' stroke='red' stroke-width='2'/>\
+<line x1='6' y1='10' x2='26' y2='10' stroke='red' stroke-width='2'/>\
+</svg>") 16 16, auto;
+}
+
+/* 🔥 OCCULT CANVAS */
+#occultCanvas{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
 }
 
 /* 🔥 FUNDO LIMPO */
@@ -86,7 +98,7 @@ body::after{
   100%{transform:translate(0)}
 }
 
-/* 🔥 CONTAINER */
+/* 🔥 CONTAINER PORTAL */
 .container{
     text-align:center;
     padding:55px 40px 45px;
@@ -94,11 +106,14 @@ body::after{
     max-width:92vw;
     background:#050000;
     border:6px double #6b0000;
-    box-shadow:
-      0 0 30px #ff000030,
-      inset 0 0 25px #2a0000;
     position:relative;
+    animation:portal 6s ease-in-out infinite;
 }
+@keyframes portal{
+  0%,100%{box-shadow:0 0 30px #ff000030,inset 0 0 25px #2a0000;}
+  50%{box-shadow:0 0 60px #ff000060,inset 0 0 40px #3a0000;}
+}
+
 .container::before,
 .container::after{
     content:"✦";
@@ -108,14 +123,6 @@ body::after{
 }
 .container::before{top:8px;left:12px;}
 .container::after{bottom:8px;right:12px;}
-
-.ritual:hover{
-    box-shadow:
-      0 0 50px #ff000055,
-      inset 0 0 30px #450000;
-    transform:scale(1.01);
-    transition:.35s;
-}
 
 /* 🔥 LOGO */
 .logo-wrap{ position:relative; display:inline-block; }
@@ -130,6 +137,20 @@ body::after{
   50%{transform:translateY(-6px)}
   100%{transform:translateY(0)}
 }
+
+/* 🔥 LORE */
+#lore{
+  position:absolute;
+  top:-25px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:14px;
+  color:#ff4444;
+  opacity:0;
+  transition:.3s;
+  white-space:nowrap;
+}
+.logo-wrap:hover #lore{ opacity:1; }
 
 /* 🔥 FUMAÇA */
 .smoke span{
@@ -150,20 +171,55 @@ body::after{
   100%{transform:translateY(-40px);opacity:0}
 }
 
+/* 🔥 BLOOD */
+.blood{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.blood::before,
+.blood::after{
+  content:"";
+  position:absolute;
+  width:4px;
+  height:20px;
+  background:red;
+  border-radius:0 0 5px 5px;
+  animation:drip 6s infinite;
+}
+.blood::before{left:6px;top:0}
+.blood::after{right:10px;top:0;animation-delay:3s}
+
+@keyframes drip{
+  0%{height:0;opacity:0}
+  30%{opacity:.8}
+  70%{height:20px}
+  100%{height:0;opacity:0}
+}
+
 /* 🔥 TEXT */
 .title{ font-size:48px; letter-spacing:6px; }
 .subtitle{ color:#aaa; margin-bottom:30px; }
 
-/* 🔥 UPLOAD */
-.upload-box{
-  transition:.25s;
+/* 🔥 FORMAT SELECT */
+.format-select{
+  display:flex;
+  justify-content:center;
+  margin-bottom:20px;
 }
-.upload-box input{
-  margin-bottom:15px;
-  color:white;
+.format-select select{
+  background:black;
+  border:1px solid red;
+  color:red;
+  padding:8px;
+  font-family:'VT323', monospace;
 }
 
-/* 🔥 PREVIEW GRID */
+/* 🔥 UPLOAD */
+.upload-box{ transition:.25s; }
+.upload-box input{ margin-bottom:15px; color:white; }
+
+/* 🔥 PREVIEW */
 #result img{
   image-rendering:pixelated;
   transition:.2s;
@@ -213,8 +269,8 @@ button:hover{
 .creator span{ color:#ff0000; }
 .pay{ color:#d0d0d0; font-size:16px; margin-top:6px; }
 
-/* 🔥 TOAST ANIM */
-@keyframes toastFade{
-  from{opacity:0; transform:translate(-50%,10px)}
-  to{opacity:1; transform:translate(-50%,0)}
+/* 🔥 SPIN */
+@keyframes spin{
+  from{transform:translate(-50%,-50%) rotate(0)}
+  to{transform:translate(-50%,-50%) rotate(360deg)}
 }
