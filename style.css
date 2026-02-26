@@ -6,11 +6,11 @@ body{
     background:#000;
     color:#ff2a2a;
     font-family:'Share Tech Mono', monospace;
-    height:100vh;
+    min-height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
-    overflow:hidden;
+    overflow-x:hidden;
 }
 
 /* 🔥 CHAMAS ATMOSFÉRICAS */
@@ -19,7 +19,7 @@ body::before{
     position:fixed;
     inset:0;
     background:url("https://i.imgur.com/6IUB9Ck.gif") center/cover no-repeat;
-    opacity:.18;
+    opacity:.10;
     mix-blend-mode:screen;
     pointer-events:none;
 }
@@ -59,16 +59,17 @@ body::before{
   100%{transform:translate(0)}
 }
 
-/* 🔥 CONTAINER BARROCO */
+/* 🔥 CONTAINER */
 .container{
     text-align:center;
-    padding:55px 45px;
-    width:450px;
+    padding:45px 40px;
+    width:420px;
+    max-width:92vw;
     background:#050000;
-    border:8px double #6b0000;
+    border:6px double #6b0000;
     box-shadow:
-      0 0 35px #ff000040,
-      inset 0 0 35px #2a0000;
+      0 0 30px #ff000030,
+      inset 0 0 25px #2a0000;
     position:relative;
 }
 
@@ -83,12 +84,12 @@ body::before{
 .container::before{top:8px;left:12px;}
 .container::after{bottom:8px;right:12px;}
 
-/* 🔥 HOVER RITUAL */
+/* 🔥 HOVER */
 .ritual:hover{
     box-shadow:
-      0 0 70px #ff000055,
-      inset 0 0 40px #450000;
-    transform:scale(1.02);
+      0 0 50px #ff000055,
+      inset 0 0 30px #450000;
+    transform:scale(1.01);
     transition:.35s;
 }
 
@@ -99,14 +100,16 @@ body::before{
 }
 
 .logo{
-  width:210pxx;
-  margin-bottom:10px;
+  width:200px;
+  max-width:100%;
+  height:auto;
+  margin-bottom:15px;
   animation:float 6s ease-in-out infinite;
 }
 
 @keyframes float{
   0%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
+  50%{transform:translateY(-6px)}
   100%{transform:translateY(0)}
 }
 
@@ -121,9 +124,9 @@ body::before{
     animation:smoke 4s infinite;
 }
 
-.smoke span:nth-child(1){ left:98px; top:10px; }
-.smoke span:nth-child(2){ left:104px; top:5px; animation-delay:1s;}
-.smoke span:nth-child(3){ left:92px; top:0px; animation-delay:2s;}
+.smoke span:nth-child(1){ left:95px; top:10px; }
+.smoke span:nth-child(2){ left:100px; top:5px; animation-delay:1s;}
+.smoke span:nth-child(3){ left:88px; top:0px; animation-delay:2s;}
 
 @keyframes smoke{
   0%{transform:translateY(0);opacity:.3}
