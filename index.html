@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>ABADDON — WEBP → PNG</title>
+
+  <!-- OLD WEB FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css?v=8">
+
+  <!-- favicon -->
+  <link rel="icon" href="favicon.png">
+
+  <!-- JSZip -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- 🔥 LOADING -->
+<div id="loader">
+  <h1 class="blink">ABADDON</h1>
+  <p>descending into inferno...</p>
+</div>
+
+<!-- ⭐ WARNING OLD WEB -->
+<div class="warning blink">
+  WARNING: THIS SITE IS NOT INDEXED • ACCESS LOGGED
+</div>
+
+<div class="container ritual">
+
+  <!-- 😈 LOGO -->
+  <div class="logo-wrap">
+    <img class="logo" src="logo.png" onload="hideLoader()">
+
+    <div class="smoke">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <h1 class="title blink">ABADDON</h1>
+  <p class="subtitle">webp → png ritual converter</p>
+
+  <div class="upload-box">
+      <input type="file" id="fileInput" accept="image/webp" multiple>
+      <button onclick="convert()">CONVERT</button>
+  </div>
+
+  <div id="result"></div>
+
+
+  <!-- ================= VIDEO RITUAL ================= -->
+
+  <div class="video-ritual">
+
+    <p class="subtitle">reddit / twitter video ritual</p>
+
+    <input
+      id="videoUrl"
+      placeholder="paste video url..."
+      class="video-input"
+    >
+
+    <button onclick="summonVideo()">SUMMON VIDEO</button>
+
+    <!-- 🔥 vazio proposital (sem player fantasma) -->
+    <div class="video-wrap"></div>
+
+  </div>
+
+
+  <!-- ⭐ VISITOR COUNTER -->
+  <div class="counter">
+    VISITORS: <span id="counter">000666</span>
+  </div>
+
+  <!-- RITUAL TEXT -->
+  <div class="creator">
+    <p>From: <span>$ublime</span></p>
+    <p class="pay">PIX: vinikleine90843@hotmail.com</p>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+<!-- 🎧 AMBIENT YOUTUBE -->
+<iframe
+  width="0"
+  height="0"
+  src="https://www.youtube.com/embed/aVt1Kkm0CSY?autoplay=1&mute=1&loop=1&playlist=aVt1Kkm0CSY"
+  frameborder="0"
+  allow="autoplay">
+</iframe>
+
+<!-- ⭐ LOADER -->
+<script>
+function hideLoader(){
+  const l = document.getElementById("loader");
+  if(l) l.style.display="none";
+}
+</script>
+
+</body>
+</html>
