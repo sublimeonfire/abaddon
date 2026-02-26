@@ -7,9 +7,13 @@ body{
     color:#ff2a2a;
     font-family:'VT323', monospace;
     min-height:100vh;
+
+    /* 🔥 IMPORTANTE → topo livre */
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:flex-start;
+    padding-top:80px;
+
     overflow-x:hidden;
     cursor:crosshair;
 }
@@ -86,7 +90,7 @@ body::after{
 /* 🔥 CONTAINER */
 .container{
     text-align:center;
-    padding:45px 40px;
+    padding:55px 40px 45px;
     width:420px;
     max-width:92vw;
     background:#050000;
@@ -193,31 +197,10 @@ button:hover{
   box-shadow:0 0 10px red;
 }
 
+/* 🔥 sem player fantasma */
 .video-wrap{
-  margin-top:15px;
-  display:flex;
-  justify-content:center;
-}
-
-/* ⭐ REDDIT EMBED */
-.video-wrap iframe{
-  width:100%;
-  max-width:380px;
-  height:420px;
-  border-radius:4px;
-  border:2px solid #6b0000;
-  box-shadow:0 0 15px #ff000030;
-}
-
-/* ⭐ TWITTER EMBED */
-.twitter-tweet{
-  margin:auto !important;
-  max-width:380px !important;
-}
-
-#videoDownload{
-  display:none;
-  margin-top:12px;
+  margin-top:10px;
+  min-height:0;
 }
 
 /* 🔥 COUNTER */
