@@ -1,33 +1,61 @@
-function convert(){
-    const input = document.getElementById('fileInput');
-    const file = input.files[0];
+async function convert(){
 
-    if(!file){
-        alert("Select WEBP file");
+    const files = document.getElementById('fileInput').files;
+    const result = document.getElementById('result');
+
+    if(!files.length){
+        alert("Select WEBP files");
         return;
     }
 
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
+    result.innerHTML = "<p style='color:#ff4444'>Invoking conversion ritual...</p>";
 
-    img.onload = function(){
-        const canvas = document.getElementById('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
+    const zip = new JSZip();
+    let count = 0;
 
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img,0,0);
+    for(const file of files){
 
-        const png = canvas.toDataURL('image/png');
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
 
-        const link = document.createElement('a');
-        link.href = png;
-        link.download = "converted.png";
-        link.textContent = "DOWNLOAD PNG";
-        link.className = "download";
+        await new Promise(resolve=>{
+            img.onload = ()=>{
 
-        const result = document.getElementById('result');
-        result.innerHTML = "";
-        result.appendChild(link);
+                const canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img,0,0);
+
+                const png = canvas.toDataURL("image/png");
+
+                zip.file(
+                    file.name.replace(".webp",".png"),
+                    png.split(',')[1],
+                    {base64:true}
+                );
+
+                count++;
+                result.innerHTML =
+                  `<p style="color:#ff4444">Converted ${count}/${files.length} souls...</p>`;
+
+                resolve();
+            }
+        });
     }
+
+    result.innerHTML = "<p style='color:#ff4444'>Sealing archive...</p>";
+
+    zip.generateAsync({type:"blob"}).then(content=>{
+
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(content);
+        a.download = "ABADDON_COLLECTION.zip";
+        a.click();
+
+        result.innerHTML =
+          "<p style='color:#00ff9c'>Archive manifested.</p>";
+
+    });
 }
