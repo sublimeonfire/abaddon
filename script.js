@@ -1,3 +1,7 @@
+/* =========================
+   🔥 CONVERTER ABADDON
+========================= */
+
 async function convert(){
 
     const files = document.getElementById('fileInput').files;
@@ -59,3 +63,60 @@ async function convert(){
 
     });
 }
+
+
+/* =========================
+   😈 WHISPER SYSTEM
+========================= */
+
+const audio = document.getElementById("whisper");
+
+/* WEB AUDIO */
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
+const source = ctx.createMediaElementSource(audio);
+const panner = ctx.createStereoPanner();
+const gain = ctx.createGain();
+
+source.connect(panner);
+panner.connect(gain);
+gain.connect(ctx.destination);
+
+/* MOUSE STATE */
+let lastMove = Date.now();
+
+/* RANDOM DELAY */
+function randomDelay(){
+  return 5000 + Math.random()*10000; // 5s - 15s
+}
+
+/* PLAY WHISPER */
+function playWhisper(){
+
+  const pan = (Math.random()*2)-1;
+  panner.pan.value = pan;
+
+  gain.gain.value = 0.18 + Math.random()*0.22;
+
+  audio.currentTime = Math.random()*2;
+
+  if(ctx.state === "suspended") ctx.resume();
+
+  audio.play();
+}
+
+/* DETECT MOVE */
+document.addEventListener("mousemove", ()=>{
+  lastMove = Date.now();
+});
+
+/* CREEPY LOOP */
+setInterval(()=>{
+
+  const idle = Date.now() - lastMove;
+
+  if(idle > randomDelay()){
+      playWhisper();
+      lastMove = Date.now();
+  }
+
+},2000);
