@@ -8,20 +8,25 @@
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=10">
 
   <!-- favicon -->
   <link rel="icon" href="favicon.png">
 
   <!-- JSZip -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
 </head>
 
 <body>
 
 <!-- 🔥 OCCULT BACKGROUND -->
 <canvas id="occultCanvas"></canvas>
+
+<!-- 🔥 FILM GRAIN -->
+<canvas id="grain"></canvas>
+
+<!-- 🔥 AUDIO AMBIENT -->
+<audio id="amb" src="ambient.mp3" loop></audio>
 
 <!-- 🔥 LOADING -->
 <div id="loader">
@@ -39,8 +44,6 @@
   <!-- 😈 LOGO -->
   <div class="logo-wrap">
     <img class="logo" src="logo.png" onload="hideLoader()">
-
-    <!-- lore text -->
     <div id="lore"></div>
 
     <div class="smoke">
@@ -63,13 +66,20 @@
     </select>
   </div>
 
+  <!-- ⭐ RESIZE -->
+  <input type="range" id="resize" min="20" max="100" value="100">
+
   <!-- ⭐ UPLOAD -->
   <div class="upload-box">
       <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/bmp" multiple>
       <button onclick="convert()">CONVERT</button>
   </div>
 
+  <!-- ⭐ RESULT -->
   <div id="result"></div>
+
+  <!-- ⭐ LOGS -->
+  <div id="logs"></div>
 
   <!-- ⭐ VISITOR COUNTER -->
   <div class="counter">
@@ -101,8 +111,8 @@
 <!-- ⭐ LOADER -->
 <script>
 function hideLoader(){
-  const l = document.getElementById("loader");
-  if(l) l.style.display="none";
+  const l=document.getElementById("loader")
+  if(l) l.style.display="none"
 }
 </script>
 
