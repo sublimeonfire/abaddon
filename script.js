@@ -66,50 +66,77 @@ async function convert(){
 
 
 /* =========================
-   🎬 VIDEO SUMMON
+   🎬 VIDEO SUMMON (NO BACKEND)
 ========================= */
 
 async function summonVideo(){
 
-    const url = document.getElementById("videoUrl").value;
-    const result = document.getElementById("result");
+    const url = document.getElementById("videoUrl").value.trim()
+    const wrap = document.querySelector(".video-wrap")
+    const dl = document.getElementById("videoDownload")
+    const result = document.getElementById("result")
 
     if(!url){
-        alert("Paste URL");
-        return;
+        alert("Paste URL")
+        return
     }
 
-    result.innerHTML = "<p style='color:#ff4444'>Summoning video entity...</p>";
+    result.innerHTML = "<p style='color:#ff4444'>Opening portal...</p>"
 
-    try{
+    wrap.innerHTML = ""
+    dl.style.display="none"
 
-        const res = await fetch("http://localhost:3000/get-video",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body: JSON.stringify({url})
-        });
+    /* ================= REDDIT ================= */
+    if(url.includes("reddit.com")){
 
-        const data = await res.json();
+        const embed = document.createElement("iframe")
 
-        if(data.videoUrl){
+        embed.src = url.replace("www.reddit.com","www.redditmedia.com")
+        embed.style.width="100%"
+        embed.style.height="420px"
+        embed.style.border="2px solid #6b0000"
+        embed.style.background="black"
 
-            const player = document.getElementById("videoPlayer");
-            player.src = data.videoUrl;
-            player.style.display = "block";
+        wrap.appendChild(embed)
 
-            const dl = document.getElementById("videoDownload");
-            dl.href = data.videoUrl;
-            dl.style.display = "inline-block";
+        dl.href = url
+        dl.innerHTML = "<button>OPEN SOURCE</button>"
+        dl.target="_blank"
+        dl.style.display="inline-block"
 
-            result.innerHTML = "<p style='color:#00ff9c'>Entity manifested.</p>";
-
-        }else{
-            result.innerHTML = "<p style='color:red'>Summon failed.</p>";
-        }
-
-    }catch(e){
-        result.innerHTML = "<p style='color:red'>Server offline.</p>";
+        result.innerHTML = "<p style='color:#00ff9c'>Portal manifested.</p>"
+        return
     }
+
+    /* ================= TWITTER ================= */
+    if(url.includes("twitter") || url.includes("x.com")){
+
+        const block = document.createElement("blockquote")
+        block.className="twitter-tweet"
+        block.style.background="black"
+
+        const a = document.createElement("a")
+        a.href = url
+        block.appendChild(a)
+
+        wrap.appendChild(block)
+
+        const script = document.createElement("script")
+        script.src="https://platform.twitter.com/widgets.js"
+        script.async=true
+        document.body.appendChild(script)
+
+        dl.href = url
+        dl.innerHTML = "<button>OPEN SOURCE</button>"
+        dl.target="_blank"
+        dl.style.display="inline-block"
+
+        result.innerHTML = "<p style='color:#00ff9c'>Portal manifested.</p>"
+        return
+    }
+
+    /* ================= UNKNOWN ================= */
+    result.innerHTML = "<p style='color:red'>Unknown entity.</p>"
 }
 
 
