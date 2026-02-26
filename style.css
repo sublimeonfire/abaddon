@@ -177,6 +177,7 @@ button:hover{
   border-top:1px solid #2b0000;
   padding-top:25px;
 }
+
 .video-input{
   width:80%;
   padding:8px;
@@ -186,16 +187,34 @@ button:hover{
   font-family:'VT323', monospace;
   margin-bottom:12px;
 }
+
 .video-input:focus{
   outline:none;
   box-shadow:0 0 10px red;
 }
-.video-wrap{ margin-top:15px; }
-#videoPlayer{
-  width:100%;
-  display:none;
-  border:2px solid #6b0000;
+
+.video-wrap{
+  margin-top:15px;
+  display:flex;
+  justify-content:center;
 }
+
+/* ⭐ REDDIT EMBED */
+.video-wrap iframe{
+  width:100%;
+  max-width:380px;
+  height:420px;
+  border-radius:4px;
+  border:2px solid #6b0000;
+  box-shadow:0 0 15px #ff000030;
+}
+
+/* ⭐ TWITTER EMBED */
+.twitter-tweet{
+  margin:auto !important;
+  max-width:380px !important;
+}
+
 #videoDownload{
   display:none;
   margin-top:12px;
