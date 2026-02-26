@@ -66,14 +66,12 @@ async function convert(){
 
 
 /* =========================
-   🎬 VIDEO SUMMON (NO BACKEND)
+   🎬 VIDEO SUMMON (BACKEND)
 ========================= */
 
 async function summonVideo(){
 
     const url = document.getElementById("videoUrl").value.trim()
-    const wrap = document.querySelector(".video-wrap")
-    const dl = document.getElementById("videoDownload")
     const result = document.getElementById("result")
 
     if(!url){
@@ -81,62 +79,32 @@ async function summonVideo(){
         return
     }
 
-    result.innerHTML = "<p style='color:#ff4444'>Opening portal...</p>"
+    result.innerHTML = "<p style='color:#ff4444'>Summoning entity...</p>"
 
-    wrap.innerHTML = ""
-    dl.style.display="none"
+    try{
 
-    /* ================= REDDIT ================= */
-    if(url.includes("reddit.com")){
+        const res = await fetch("http://localhost:3000/get-video",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({url})
+        })
 
-        const embed = document.createElement("iframe")
+        const data = await res.json()
 
-        embed.src = url.replace("www.reddit.com","www.redditmedia.com")
-        embed.style.width="100%"
-        embed.style.height="420px"
-        embed.style.border="2px solid #6b0000"
-        embed.style.background="black"
+        if(data.videoUrl){
 
-        wrap.appendChild(embed)
+            // abre player com download
+            window.open(data.videoUrl, "_blank")
 
-        dl.href = url
-        dl.innerHTML = "<button>OPEN SOURCE</button>"
-        dl.target="_blank"
-        dl.style.display="inline-block"
+            result.innerHTML = "<p style='color:#00ff9c'>Entity manifested.</p>"
 
-        result.innerHTML = "<p style='color:#00ff9c'>Portal manifested.</p>"
-        return
+        }else{
+            result.innerHTML = "<p style='color:red'>Summon failed.</p>"
+        }
+
+    }catch(e){
+        result.innerHTML = "<p style='color:red'>Backend offline.</p>"
     }
-
-    /* ================= TWITTER ================= */
-    if(url.includes("twitter") || url.includes("x.com")){
-
-        const block = document.createElement("blockquote")
-        block.className="twitter-tweet"
-        block.style.background="black"
-
-        const a = document.createElement("a")
-        a.href = url
-        block.appendChild(a)
-
-        wrap.appendChild(block)
-
-        const script = document.createElement("script")
-        script.src="https://platform.twitter.com/widgets.js"
-        script.async=true
-        document.body.appendChild(script)
-
-        dl.href = url
-        dl.innerHTML = "<button>OPEN SOURCE</button>"
-        dl.target="_blank"
-        dl.style.display="inline-block"
-
-        result.innerHTML = "<p style='color:#00ff9c'>Portal manifested.</p>"
-        return
-    }
-
-    /* ================= UNKNOWN ================= */
-    result.innerHTML = "<p style='color:red'>Unknown entity.</p>"
 }
 
 
