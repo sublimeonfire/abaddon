@@ -154,8 +154,26 @@ body::after{
 .title{ font-size:48px; letter-spacing:6px; }
 .subtitle{ color:#aaa; margin-bottom:30px; }
 
-/* 🔥 INPUT */
-.upload-box input{ margin-bottom:15px; color:white; }
+/* 🔥 UPLOAD */
+.upload-box{
+  transition:.25s;
+}
+.upload-box input{
+  margin-bottom:15px;
+  color:white;
+}
+
+/* 🔥 PREVIEW GRID */
+#result img{
+  image-rendering:pixelated;
+  transition:.2s;
+  border:1px solid #300;
+  box-shadow:0 0 10px #300;
+}
+#result img:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px red;
+}
 
 /* 🔥 BUTTON */
 button{
@@ -194,3 +212,9 @@ button:hover{
 }
 .creator span{ color:#ff0000; }
 .pay{ color:#d0d0d0; font-size:16px; margin-top:6px; }
+
+/* 🔥 TOAST ANIM */
+@keyframes toastFade{
+  from{opacity:0; transform:translate(-50%,10px)}
+  to{opacity:1; transform:translate(-50%,0)}
+}
