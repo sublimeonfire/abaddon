@@ -66,13 +66,35 @@ async function convert(){
 
 
 /* =========================
+   👁️ OLD WEB COUNTER
+========================= */
+
+const counterEl = document.getElementById("counter");
+
+if(counterEl){
+
+    let counter = 666 + Math.floor(Math.random()*120);
+
+    counterEl.textContent = String(counter).padStart(6,"0");
+
+    setInterval(()=>{
+
+        if(Math.random() > 0.6){
+            counter++;
+            counterEl.textContent = String(counter).padStart(6,"0");
+        }
+
+    },4000);
+}
+
+
+/* =========================
    😈 AUDIO SYSTEM
 ========================= */
 
 const whisper = document.getElementById("whisper");
 const ambient = document.getElementById("ambient");
 
-/* WebAudio contexto */
 const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
 /* Whisper binaural */
