@@ -1,126 +1,38 @@
 /* =========================
-   🔥 CONVERTER ABADDON
-========================= */
-
-async function convert(){
-
-    const files = document.getElementById('fileInput').files;
-    const result = document.getElementById('result');
-
-    if(!files.length){
-        alert("Select WEBP files");
-        return;
-    }
-
-    result.innerHTML = "<p style='color:#ff4444'>Invoking conversion ritual...</p>";
-
-    const zip = new JSZip();
-    let count = 0;
-
-    for(const file of files){
-
-        const img = new Image();
-        img.src = URL.createObjectURL(file);
-
-        await new Promise(resolve=>{
-            img.onload = ()=>{
-
-                const canvas = document.createElement("canvas");
-                canvas.width = img.width;
-                canvas.height = img.height;
-
-                const ctx = canvas.getContext("2d");
-                ctx.drawImage(img,0,0);
-
-                const png = canvas.toDataURL("image/png");
-
-                zip.file(
-                    file.name.replace(".webp",".png"),
-                    png.split(',')[1],
-                    {base64:true}
-                );
-
-                count++;
-                result.innerHTML =
-                  `<p style="color:#ff4444">Converted ${count}/${files.length} souls...</p>`;
-
-                resolve();
-            }
-        });
-    }
-
-    result.innerHTML = "<p style='color:#ff4444'>Sealing archive...</p>";
-
-    zip.generateAsync({type:"blob"}).then(content=>{
-
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(content);
-        a.download = "ABADDON_COLLECTION.zip";
-        a.click();
-
-        result.innerHTML =
-          "<p style='color:#00ff9c'>Archive manifested.</p>";
-
-    });
-}
-
-
-/* =========================
-   😈 WHISPER SYSTEM
-========================= */
-
-const audio = document.getElementById("whisper");
-
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
-const source = ctx.createMediaElementSource(audio);
-const panner = ctx.createStereoPanner();
-const gain = ctx.createGain();
-
-source.connect(panner);
-panner.connect(gain);
-gain.connect(ctx.destination);
-
-let lastMove = Date.now();
-
-function randomDelay(){
-  return 5000 + Math.random()*10000;
-}
-
-function playWhisper(){
-
-  const pan = (Math.random()*2)-1;
-  panner.pan.value = pan;
-
-  gain.gain.value = 0.18 + Math.random()*0.22;
-
-  audio.currentTime = Math.random()*2;
-
-  if(ctx.state === "suspended") ctx.resume();
-
-  audio.play();
-}
-
-document.addEventListener("mousemove", ()=>{
-  lastMove = Date.now();
-});
-
-setInterval(()=>{
-
-  const idle = Date.now() - lastMove;
-
-  if(idle > randomDelay()){
-      playWhisper();
-      lastMove = Date.now();
-  }
-
-},2000);
-
-
-/* =========================
-   🎧 AMBIENT SYSTEM
+   🎧 ABADDON AMBIENT ENGINE
 ========================= */
 
 const ambient = document.getElementById("ambient");
+
+/* reverb leve */
+let reverb, reverbGain;
+
+async function setupReverb(){
+
+  if(!ambient) return;
+
+  reverb = ctx.createConvolver();
+  reverbGain = ctx.createGain();
+  reverbGain.gain.value = 0.10;
+
+  const len = ctx.sampleRate * 2;
+  const impulse = ctx.createBuffer(2, len, ctx.sampleRate);
+
+  for(let ch=0; ch<2; ch++){
+    const data = impulse.getChannelData(ch);
+    for(let i=0;i<len;i++){
+      data[i]=(Math.random()*2-1)*(1-i/len);
+    }
+  }
+
+  reverb.buffer = impulse;
+
+  const ambientSource = ctx.createMediaElementSource(ambient);
+  ambientSource.connect(ctx.destination);
+  ambientSource.connect(reverb);
+  reverb.connect(reverbGain);
+  reverbGain.connect(ctx.destination);
+}
 
 /* fade in ambient */
 function fadeInAmbient(){
@@ -128,7 +40,6 @@ function fadeInAmbient(){
     if(!ambient) return;
 
     ambient.volume = 0;
-
     ambient.play().catch(()=>{});
 
     let v = 0;
@@ -136,26 +47,39 @@ function fadeInAmbient(){
     const f = setInterval(()=>{
         v += 0.01;
         ambient.volume = v;
-        if(v >= 0.18) clearInterval(f);
+        if(v >= 0.22) clearInterval(f);
     },120);
 }
 
-/* start after loader */
-window.addEventListener("load", ()=>{
+/* ducking quando whisper toca */
+const originalWhisper = playWhisper;
+
+playWhisper = function(){
+
+    if(ambient) ambient.volume *= 0.4;
+
+    originalWhisper();
 
     setTimeout(()=>{
+        if(ambient) ambient.volume = 0.22;
+    },3000);
+};
 
-        if(ctx.state === "suspended") ctx.resume();
+/* start após loader */
+window.addEventListener("load", async ()=>{
 
+    setTimeout(async ()=>{
+
+        if(ctx.state === "suspended") await ctx.resume();
+
+        await setupReverb();
         fadeInAmbient();
 
     },3000);
 
 });
 
-/* unlock autoplay */
+/* autoplay unlock */
 document.addEventListener("click", ()=>{
-    if(ambient && ambient.paused){
-        fadeInAmbient();
-    }
+    fadeInAmbient();
 },{once:true});
