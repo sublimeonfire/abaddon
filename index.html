@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>ABADDON — WEBP → PNG</title>
+  <title>ABADDON — RITUAL CONVERTER</title>
 
   <!-- OLD WEB FONT -->
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=8">
+  <link rel="stylesheet" href="style.css?v=9">
 
   <!-- favicon -->
   <link rel="icon" href="favicon.png">
@@ -19,6 +19,9 @@
 </head>
 
 <body>
+
+<!-- 🔥 OCCULT BACKGROUND -->
+<canvas id="occultCanvas"></canvas>
 
 <!-- 🔥 LOADING -->
 <div id="loader">
@@ -37,6 +40,9 @@
   <div class="logo-wrap">
     <img class="logo" src="logo.png" onload="hideLoader()">
 
+    <!-- lore text -->
+    <div id="lore"></div>
+
     <div class="smoke">
       <span></span>
       <span></span>
@@ -45,10 +51,21 @@
   </div>
 
   <h1 class="title blink">ABADDON</h1>
-  <p class="subtitle">webp → png ritual converter</p>
+  <p class="subtitle">image transmutation ritual</p>
 
+  <!-- ⭐ FORMAT SELECT -->
+  <div class="format-select">
+    <select id="toFormat">
+      <option value="png">PNG</option>
+      <option value="jpg">JPG</option>
+      <option value="webp">WEBP</option>
+      <option value="bmp">BMP</option>
+    </select>
+  </div>
+
+  <!-- ⭐ UPLOAD -->
   <div class="upload-box">
-      <input type="file" id="fileInput" accept="image/webp" multiple>
+      <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/bmp" multiple>
       <button onclick="convert()">CONVERT</button>
   </div>
 
@@ -64,6 +81,9 @@
     <p>From: <span>$ublime</span></p>
     <p class="pay">PIX: vinikleine90843@hotmail.com</p>
   </div>
+
+  <!-- blood drip -->
+  <div class="blood"></div>
 
 </div>
 
