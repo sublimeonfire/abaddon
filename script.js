@@ -103,144 +103,7 @@ box.addEventListener("drop",e=>{
 })
 
 /* =========================
-   🔥 OCCULT PARTICLES
-========================= */
-const canvas=document.getElementById("occultCanvas")
-if(canvas){
-const ctx=canvas.getContext("2d")
-
-function resize(){
- canvas.width=innerWidth
- canvas.height=innerHeight
-}
-resize()
-addEventListener("resize",resize)
-
-const symbols=["✶","☽","⛧","☿","✦","ᛟ"]
-
-const particles=Array.from({length:35}).map(()=>({
- x:Math.random()*canvas.width,
- y:Math.random()*canvas.height,
- vx:(Math.random()-.5)*.2,
- vy:(Math.random()-.5)*.2,
- size:Math.random()*2+1,
- life:Math.random()*200
-}))
-
-function loop(){
- ctx.clearRect(0,0,canvas.width,canvas.height)
-
- particles.forEach(p=>{
-  p.x+=p.vx
-  p.y+=p.vy
-  p.life--
-
-  ctx.fillStyle="rgba(255,0,0,.25)"
-  ctx.beginPath()
-  ctx.arc(p.x,p.y,p.size,0,Math.PI*2)
-  ctx.fill()
-
-  if(p.life<0){
-    ctx.fillStyle="rgba(255,0,0,.18)"
-    ctx.font="14px VT323"
-    ctx.fillText(symbols[Math.floor(Math.random()*symbols.length)],p.x,p.y)
-    p.life=200+Math.random()*200
-  }
- })
-
- requestAnimationFrame(loop)
-}
-loop()
-}
-
-/* =========================
-   🔥 FILM GRAIN
-========================= */
-const grain=document.getElementById("grain")
-if(grain){
- const gctx=grain.getContext("2d")
- function resizeGrain(){
-  grain.width=innerWidth
-  grain.height=innerHeight
- }
- resizeGrain()
- addEventListener("resize",resizeGrain)
-
- function grainLoop(){
-  const img=gctx.createImageData(grain.width,grain.height)
-  for(let i=0;i<img.data.length;i+=4){
-    const v=Math.random()*255
-    img.data[i]=img.data[i+1]=img.data[i+2]=v
-    img.data[i+3]=20
-  }
-  gctx.putImageData(img,0,0)
-  requestAnimationFrame(grainLoop)
- }
- grainLoop()
-}
-
-/* =========================
-   🔥 RUNES CURSOR
-========================= */
-const runes=["✶","☽","⛧","✦","ᛟ"]
-addEventListener("mousemove",e=>{
- if(Math.random()<.15){
-  const r=document.createElement("div")
-  r.textContent=runes[Math.floor(Math.random()*runes.length)]
-  r.style.position="fixed"
-  r.style.left=e.clientX+"px"
-  r.style.top=e.clientY+"px"
-  r.style.color="rgba(255,0,0,.35)"
-  r.style.pointerEvents="none"
-  r.style.transition="1s"
-  document.body.appendChild(r)
-
-  setTimeout(()=>{
-   r.style.transform="translateY(-20px)"
-   r.style.opacity=0
-   setTimeout(()=>r.remove(),1000)
-  })
- }
-})
-
-/* =========================
-   🔥 LORE
-========================= */
-const loreTexts=[
- "the gate is open",
- "you are observed",
- "entity acknowledged",
- "ritual stabilized",
- "signal received"
-]
-
-const lore=document.getElementById("lore")
-const logoWrap=document.querySelector(".logo-wrap")
-if(logoWrap && lore){
-logoWrap.addEventListener("mouseenter",()=>{
- lore.textContent=loreTexts[Math.floor(Math.random()*loreTexts.length)]
-})
-}
-
-/* =========================
-   🔥 AUDIO AMBIENT
-========================= */
-const amb=document.getElementById("amb")
-addEventListener("click",()=>{
- if(amb && amb.paused){
-  amb.volume=.2
-  amb.play()
- }
-},{once:true})
-
-addEventListener("mousemove",e=>{
- if(amb){
-  amb.playbackRate=1+(e.clientX/window.innerWidth)*.1
- }
-})
-
-/* =========================
-   🔥 CONVERT
+   🔥 CONVERT + VORTEX
 ========================= */
 async function convert(){
 
@@ -255,21 +118,70 @@ async function convert(){
 
  result.innerHTML="<p style='color:#ff4444'>transmuting...</p>"
 
+ /* ===== overlay ===== */
  const overlay=document.createElement("div")
  overlay.style.position="fixed"
  overlay.style.inset=0
- overlay.style.background="rgba(0,0,0,.85)"
+ overlay.style.background="radial-gradient(circle, rgba(0,0,0,.3) 0%, rgba(0,0,0,.95) 70%)"
+ overlay.style.backdropFilter="blur(2px)"
  overlay.style.zIndex="9998"
  overlay.style.display="flex"
  overlay.style.alignItems="center"
  overlay.style.justifyContent="center"
- overlay.style.fontSize="60px"
- overlay.style.color="rgba(255,0,0,.4)"
- overlay.textContent="⛧"
- overlay.style.animation="spin 2s linear"
+ overlay.style.boxShadow="inset 0 0 200px black"
  document.body.appendChild(overlay)
- setTimeout(()=>overlay.remove(),1800)
 
+ /* ===== vortex canvas ===== */
+ const vcanvas=document.createElement("canvas")
+ vcanvas.width=innerWidth
+ vcanvas.height=innerHeight
+ vcanvas.style.position="fixed"
+ vcanvas.style.inset=0
+ vcanvas.style.pointerEvents="none"
+ overlay.appendChild(vcanvas)
+
+ const vctx=vcanvas.getContext("2d")
+ const cx=vcanvas.width/2
+ const cy=vcanvas.height/2
+
+ const vortex=Array.from({length:120}).map(()=>({
+  x:Math.random()*vcanvas.width,
+  y:Math.random()*vcanvas.height,
+  speed:.02+Math.random()*.04
+ }))
+
+ let running=true
+
+ function vortexLoop(){
+  if(!running) return
+  vctx.clearRect(0,0,vcanvas.width,vcanvas.height)
+
+  vortex.forEach(p=>{
+    p.x+=(cx-p.x)*p.speed
+    p.y+=(cy-p.y)*p.speed
+
+    vctx.fillStyle="rgba(255,0,0,.5)"
+    vctx.fillRect(p.x,p.y,2,2)
+  })
+
+  requestAnimationFrame(vortexLoop)
+ }
+ vortexLoop()
+
+ /* symbol */
+ const symbol=document.createElement("div")
+ symbol.textContent="⛧"
+ symbol.style.fontSize="90px"
+ symbol.style.color="rgba(255,0,0,.6)"
+ symbol.style.animation="spin 2s linear infinite"
+ overlay.appendChild(symbol)
+
+ setTimeout(()=>{
+  running=false
+  overlay.remove()
+ },2000)
+
+ /* ===== conversion ===== */
  let converted=[]
 
  for(const file of files){
@@ -312,7 +224,6 @@ async function convert(){
    result.appendChild(a)
  })
 
- /* logs */
  const logs=document.getElementById("logs")
  if(logs){
   const d=new Date().toLocaleTimeString()
