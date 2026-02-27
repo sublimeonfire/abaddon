@@ -47,13 +47,8 @@ function toast(msg,color="#00ff9c"){
 /* =========================
    🔥 ENABLE FLOW
 ========================= */
-
 function checkReady(){
-    if(filesSelected && toFormat.value){
-        convertBtn.disabled=false
-    }else{
-        convertBtn.disabled=true
-    }
+    convertBtn.disabled = !(filesSelected && toFormat.value)
 }
 
 /* =========================
@@ -89,7 +84,7 @@ setInterval(()=>{
 },4000)
 
 /* =========================
-   🔥 PREVIEW + AUTO DETECT
+   🔥 FILE HANDLE (NO PREVIEW)
 ========================= */
 fileInput.addEventListener("change",handleFiles)
 
@@ -98,38 +93,20 @@ function handleFiles(){
     if(!files.length) return
 
     filesSelected=true
-    importBtn.textContent=`${files.length} ENTITY`
 
-    // auto detect formato DE
+    // botão mostra quantidade
+    importBtn.textContent=`${files.length} SELECTED`
+
+    // texto abaixo
+    result.innerHTML=`<p style="color:#ff4444;opacity:.7">${files.length} entity selected</p>`
+
+    // auto detect formato origem
     if(files[0]){
         const ext=files[0].name.split(".").pop().toLowerCase()
         if(fromFormat) fromFormat.value=ext
     }
 
-    previewFiles()
     checkReady()
-}
-
-function previewFiles(){
-    const files=[...fileInput.files]
-
-    result.innerHTML=""
-
-    const grid=document.createElement("div")
-    grid.style.display="grid"
-    grid.style.gridTemplateColumns="repeat(auto-fill,minmax(120px,1fr))"
-    grid.style.gap="10px"
-    grid.style.marginBottom="20px"
-
-    files.forEach(file=>{
-        const img=document.createElement("img")
-        img.src=URL.createObjectURL(file)
-        img.style.width="100%"
-        img.style.objectFit="cover"
-        grid.appendChild(img)
-    })
-
-    result.appendChild(grid)
 }
 
 /* =========================
@@ -175,8 +152,6 @@ async function convert(){
    return
  }
 
- const scale=document.getElementById("resize")?.value/100 || 1
-
  result.innerHTML="<p style='color:#ff4444'>transmuting...</p>"
 
  let converted=[]
@@ -188,10 +163,10 @@ async function convert(){
   await new Promise(res=>{
     img.onload=()=>{
       const canvas=document.createElement("canvas")
-      canvas.width=img.width*scale
-      canvas.height=img.height*scale
+      canvas.width=img.width
+      canvas.height=img.height
       const ctx=canvas.getContext("2d")
-      ctx.drawImage(img,0,0,canvas.width,canvas.height)
+      ctx.drawImage(img,0,0)
 
       let mime="image/png"
       if(to==="jpg") mime="image/jpeg"
