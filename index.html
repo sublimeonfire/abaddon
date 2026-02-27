@@ -54,11 +54,33 @@
       opacity:.4;
       cursor:not-allowed;
     }
+
+    /* 🔊 volume button */
+    #volumeBtn{
+      position:fixed;
+      top:18px;
+      left:18px;
+      font-size:26px;
+      cursor:pointer;
+      z-index:9999;
+      color:#ff0000;
+      text-shadow:0 0 8px red;
+      transition:.2s;
+      user-select:none;
+    }
+
+    #volumeBtn:hover{
+      transform:scale(1.2);
+      text-shadow:0 0 15px red;
+    }
   </style>
 
 </head>
 
 <body>
+
+<!-- 🔊 VOLUME BUTTON -->
+<div id="volumeBtn">🔇</div>
 
 <canvas id="occultCanvas"></canvas>
 <canvas id="grain"></canvas>
@@ -89,7 +111,6 @@
   <h1 class="title blink">ABADDON</h1>
   <p class="subtitle">image transmutation ritual</p>
 
-  <!-- ⭐ DE → PARA -->
   <div class="format-row">
 
     <select id="fromFormat">
@@ -114,7 +135,6 @@
 
   <input type="range" id="resize" min="20" max="100" value="100">
 
-  <!-- ⭐ UPLOAD CONTROL -->
   <div class="upload-box">
 
     <input 
@@ -148,7 +168,7 @@
 
 <script src="script.js"></script>
 
-<!-- 🔥 LOGIC READY -->
+<!-- 🔥 INLINE LOGIC -->
 <script>
 
 function hideLoader(){
@@ -156,6 +176,7 @@ function hideLoader(){
   if(l) l.style.display="none"
 }
 
+/* ===== enable convert ===== */
 const fileInput = document.getElementById("fileInput")
 const importBtn = document.getElementById("importBtn")
 const convertBtn = document.getElementById("convertBtn")
@@ -179,6 +200,25 @@ function checkReady(){
     convertBtn.disabled = false
   }else{
     convertBtn.disabled = true
+  }
+}
+
+/* ===== audio control ===== */
+const amb=document.getElementById("amb")
+const volumeBtn=document.getElementById("volumeBtn")
+
+let playing=false
+
+volumeBtn.onclick=async()=>{
+  if(!playing){
+    amb.volume=.18
+    await amb.play()
+    volumeBtn.textContent="🔊"
+    playing=true
+  }else{
+    amb.pause()
+    volumeBtn.textContent="🔇"
+    playing=false
   }
 }
 
