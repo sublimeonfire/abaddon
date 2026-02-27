@@ -4,44 +4,77 @@
   <meta charset="UTF-8">
   <title>ABADDON — RITUAL CONVERTER</title>
 
-  <!-- OLD WEB FONT -->
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css?v=11">
-
-  <!-- favicon -->
   <link rel="icon" href="favicon.png">
-
-  <!-- JSZip -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <!-- 🔥 MINI CSS layout -->
+  <style>
+    .format-row{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-bottom:10px;
+      align-items:center;
+    }
+
+    .format-row select{
+      background:#0b0b0b;
+      border:1px solid #ff0000;
+      color:#fff;
+      padding:8px 14px;
+      font-family:VT323;
+      font-size:22px;
+    }
+
+    .arrow{
+      color:#ff0000;
+      font-size:26px;
+    }
+
+    .upload-box{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:10px;
+    }
+
+    .upload-box button{
+      background:#0b0b0b;
+      border:1px solid #ff0000;
+      color:#fff;
+      padding:10px 18px;
+      font-family:VT323;
+      font-size:20px;
+      cursor:pointer;
+    }
+
+    #convertBtn:disabled{
+      opacity:.4;
+      cursor:not-allowed;
+    }
+  </style>
+
 </head>
 
 <body>
 
-<!-- 🔥 OCCULT BACKGROUND -->
 <canvas id="occultCanvas"></canvas>
-
-<!-- 🔥 FILM GRAIN -->
 <canvas id="grain"></canvas>
-
-<!-- 🔥 AUDIO AMBIENT (controlado via JS) -->
 <audio id="amb" src="ambient.mp3" loop></audio>
 
-<!-- 🔥 LOADING -->
 <div id="loader">
   <h1 class="blink">ABADDON</h1>
   <p>descending into inferno...</p>
 </div>
 
-<!-- ⭐ WARNING OLD WEB -->
 <div class="warning blink">
   WARNING: THIS SITE IS NOT INDEXED • ACCESS LOGGED
 </div>
 
 <div class="container ritual">
 
-  <!-- 😈 LOGO -->
   <div class="logo-wrap">
     <img class="logo" src="logo.png" onload="hideLoader()">
     <div id="lore"></div>
@@ -56,55 +89,99 @@
   <h1 class="title blink">ABADDON</h1>
   <p class="subtitle">image transmutation ritual</p>
 
-  <!-- ⭐ FORMAT SELECT -->
-  <div class="format-select">
-    <select id="toFormat">
+  <!-- ⭐ DE → PARA -->
+  <div class="format-row">
+
+    <select id="fromFormat">
+      <option value="">DE</option>
       <option value="png">PNG</option>
       <option value="jpg">JPG</option>
       <option value="webp">WEBP</option>
       <option value="bmp">BMP</option>
     </select>
+
+    <span class="arrow">→</span>
+
+    <select id="toFormat">
+      <option value="">PARA</option>
+      <option value="png">PNG</option>
+      <option value="jpg">JPG</option>
+      <option value="webp">WEBP</option>
+      <option value="bmp">BMP</option>
+    </select>
+
   </div>
 
-  <!-- ⭐ RESIZE -->
   <input type="range" id="resize" min="20" max="100" value="100">
 
-  <!-- ⭐ UPLOAD -->
+  <!-- ⭐ UPLOAD CONTROL -->
   <div class="upload-box">
-      <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/bmp" multiple>
-      <button onclick="convert()">CONVERT</button>
+
+    <input 
+      type="file" 
+      id="fileInput" 
+      accept="image/png,image/jpeg,image/webp,image/bmp" 
+      multiple
+      hidden
+    >
+
+    <button id="importBtn">IMPORTAR</button>
+    <button id="convertBtn" onclick="convert()" disabled>CONVERT</button>
+
   </div>
 
-  <!-- ⭐ RESULT -->
   <div id="result"></div>
-
-  <!-- ⭐ LOGS -->
   <div id="logs"></div>
 
-  <!-- ⭐ VISITOR COUNTER -->
   <div class="counter">
     VISITORS: <span id="counter">000666</span>
   </div>
 
-  <!-- RITUAL TEXT -->
   <div class="creator">
     <p>From: <span>$ublime</span></p>
     <p class="pay">PIX: vinikleine90843@hotmail.com</p>
   </div>
 
-  <!-- blood drip -->
   <div class="blood"></div>
 
 </div>
 
 <script src="script.js"></script>
 
-<!-- ⭐ LOADER -->
+<!-- 🔥 LOGIC READY -->
 <script>
+
 function hideLoader(){
   const l=document.getElementById("loader")
   if(l) l.style.display="none"
 }
+
+const fileInput = document.getElementById("fileInput")
+const importBtn = document.getElementById("importBtn")
+const convertBtn = document.getElementById("convertBtn")
+const fromFormat = document.getElementById("fromFormat")
+const toFormat = document.getElementById("toFormat")
+
+let filesSelected = false
+
+importBtn.onclick = () => fileInput.click()
+
+fileInput.onchange = () => {
+  filesSelected = fileInput.files.length > 0
+  checkReady()
+}
+
+fromFormat.onchange = checkReady
+toFormat.onchange = checkReady
+
+function checkReady(){
+  if(filesSelected && fromFormat.value && toFormat.value && fromFormat.value !== toFormat.value){
+    convertBtn.disabled = false
+  }else{
+    convertBtn.disabled = true
+  }
+}
+
 </script>
 
 </body>
