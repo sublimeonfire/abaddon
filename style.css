@@ -22,16 +22,16 @@ cursor:url("data:image/svg+xml;utf8,\
 
 /* 🔥 HOVER CURSOR */
 button:hover,
-.logo:hover,
-#result img:hover{
+.logo:hover{
 cursor:url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
 <circle cx='16' cy='16' r='6' stroke='red' fill='none' stroke-width='2'/>\
 </svg>") 16 16, auto;
 }
 
-/* 🔥 OCCULT CANVAS */
+/* 🔥 CANVAS LAYERS */
 #occultCanvas{ position:fixed; inset:0; pointer-events:none; z-index:0; }
+#particles{ position:fixed; inset:0; pointer-events:none; z-index:1; }
 #grain{ position:fixed; inset:0; pointer-events:none; opacity:.08; z-index:2; }
 
 /* 🔥 CRT */
@@ -65,6 +65,24 @@ color:#ff0000;
 letter-spacing:3px;
 text-shadow:0 0 8px red;
 z-index:50;
+}
+
+/* 🔥 VOLUME BTN */
+#volumeBtn{
+position:fixed;
+top:18px;
+left:18px;
+font-size:26px;
+cursor:pointer;
+z-index:9999;
+color:#ff0000;
+text-shadow:0 0 8px red;
+transition:.2s;
+user-select:none;
+}
+#volumeBtn:hover{
+transform:scale(1.2);
+text-shadow:0 0 15px red;
 }
 
 /* 🔥 LOADER */
@@ -105,6 +123,7 @@ background:#050000;
 border:6px double #6b0000;
 position:relative;
 animation:portal 6s ease-in-out infinite;
+z-index:10;
 }
 @keyframes portal{
 0%,100%{box-shadow:0 0 30px #ff000030,inset 0 0 25px #2a0000;}
@@ -159,9 +178,7 @@ animation:drip 6s infinite;
 .blood::after{right:10px;top:0;animation-delay:3s}
 @keyframes drip{0%{height:0;opacity:0}30%{opacity:.8}70%{height:20px}100%{height:0;opacity:0}}
 
-/* =========================
-   🔥 NEW FORMAT ROW
-========================= */
+/* 🔥 FORMAT ROW */
 .format-row{
 display:flex;
 gap:12px;
@@ -169,7 +186,6 @@ justify-content:center;
 align-items:center;
 margin-bottom:15px;
 }
-
 .format-row select{
 background:black;
 border:1px solid red;
@@ -179,16 +195,13 @@ font-family:'VT323', monospace;
 font-size:22px;
 min-width:90px;
 }
-
 .arrow{
 color:#ff0000;
 font-size:28px;
 text-shadow:0 0 8px red;
 }
 
-/* =========================
-   🔥 UPLOAD BOX
-========================= */
+/* 🔥 UPLOAD */
 .upload-box{
 display:flex;
 gap:10px;
@@ -196,29 +209,6 @@ justify-content:center;
 margin-top:12px;
 padding:8px;
 transition:.2s;
-}
-
-/* =========================
-   🔥 PREVIEW GRID
-========================= */
-#result div{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-gap:10px;
-margin-top:15px;
-}
-
-#result img{
-image-rendering:pixelated;
-transition:.2s;
-border:1px solid #300;
-box-shadow:0 0 10px #300;
-width:100%;
-object-fit:cover;
-}
-#result img:hover{
-transform:scale(1.05);
-box-shadow:0 0 15px red;
 }
 
 /* 🔥 BUTTON */
