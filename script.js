@@ -4,6 +4,12 @@
 
 const fileInput = document.getElementById("fileInput")
 const result = document.getElementById("result")
+const importBtn = document.getElementById("importBtn")
+const convertBtn = document.getElementById("convertBtn")
+const fromFormat = document.getElementById("fromFormat")
+const toFormat = document.getElementById("toFormat")
+
+let filesSelected=false
 
 /* =========================
    🔥 AUDIO AUTOPLAY HACK
@@ -39,6 +45,25 @@ function toast(msg,color="#00ff9c"){
 }
 
 /* =========================
+   🔥 ENABLE FLOW
+========================= */
+
+function checkReady(){
+    if(filesSelected && toFormat.value){
+        convertBtn.disabled=false
+    }else{
+        convertBtn.disabled=true
+    }
+}
+
+/* =========================
+   🔥 IMPORT BTN
+========================= */
+if(importBtn){
+ importBtn.onclick=()=>fileInput.click()
+}
+
+/* =========================
    🔥 COUNTER
 ========================= */
 function updateCounter(qtd=1){
@@ -55,7 +80,6 @@ window.addEventListener("DOMContentLoaded",()=>{
     if(el) el.textContent=String(saved).padStart(6,"0")
 })
 
-/* fake global growth */
 setInterval(()=>{
  let c=parseInt(localStorage.getItem("abaddon_count")||666)
  c+=Math.floor(Math.random()*3)
@@ -65,17 +89,35 @@ setInterval(()=>{
 },4000)
 
 /* =========================
-   🔥 PREVIEW
+   🔥 PREVIEW + AUTO DETECT
 ========================= */
-fileInput.addEventListener("change",previewFiles)
+fileInput.addEventListener("change",handleFiles)
 
-function previewFiles(){
+function handleFiles(){
     const files=[...fileInput.files]
     if(!files.length) return
 
+    filesSelected=true
+    importBtn.textContent=`${files.length} ENTITY`
+
+    // auto detect formato DE
+    if(files[0]){
+        const ext=files[0].name.split(".").pop().toLowerCase()
+        if(fromFormat) fromFormat.value=ext
+    }
+
+    previewFiles()
+    checkReady()
+}
+
+function previewFiles(){
+    const files=[...fileInput.files]
+
+    result.innerHTML=""
+
     const grid=document.createElement("div")
     grid.style.display="grid"
-    grid.style.gridTemplateColumns="repeat(3,1fr)"
+    grid.style.gridTemplateColumns="repeat(auto-fill,minmax(120px,1fr))"
     grid.style.gap="10px"
     grid.style.marginBottom="20px"
 
@@ -83,10 +125,10 @@ function previewFiles(){
         const img=document.createElement("img")
         img.src=URL.createObjectURL(file)
         img.style.width="100%"
+        img.style.objectFit="cover"
         grid.appendChild(img)
     })
 
-    result.innerHTML=""
     result.appendChild(grid)
 }
 
@@ -95,27 +137,29 @@ function previewFiles(){
 ========================= */
 const box=document.querySelector(".upload-box")
 
-;["dragenter","dragover"].forEach(evt=>{
+if(box){
+ ["dragenter","dragover"].forEach(evt=>{
     box.addEventListener(evt,e=>{
         e.preventDefault()
         box.style.boxShadow="0 0 25px red"
     })
-})
+ })
 
-;["dragleave","drop"].forEach(evt=>{
+ ["dragleave","drop"].forEach(evt=>{
     box.addEventListener(evt,e=>{
         e.preventDefault()
         box.style.boxShadow="none"
     })
-})
+ })
 
-box.addEventListener("drop",e=>{
+ box.addEventListener("drop",e=>{
     fileInput.files=e.dataTransfer.files
-    previewFiles()
-})
+    handleFiles()
+ })
+}
 
 /* =========================
-   🔥 CONVERT (CLEAN)
+   🔥 CONVERT
 ========================= */
 async function convert(){
 
@@ -125,7 +169,12 @@ async function convert(){
   return
  }
 
- const to=document.getElementById("toFormat").value
+ const to=toFormat.value
+ if(!to){
+   toast("choose destination","#ff4444")
+   return
+ }
+
  const scale=document.getElementById("resize")?.value/100 || 1
 
  result.innerHTML="<p style='color:#ff4444'>transmuting...</p>"
