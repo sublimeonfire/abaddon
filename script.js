@@ -6,6 +6,18 @@ const fileInput = document.getElementById("fileInput")
 const result = document.getElementById("result")
 
 /* =========================
+   🔥 AUDIO AUTOPLAY HACK
+========================= */
+const amb=document.getElementById("amb")
+
+if(amb){
+ amb.volume=0.01
+ amb.play().then(()=>{
+   setTimeout(()=>amb.volume=.18,2000)
+ }).catch(()=>{})
+}
+
+/* =========================
    🔥 TOAST
 ========================= */
 function toast(msg,color="#00ff9c"){
@@ -103,7 +115,7 @@ box.addEventListener("drop",e=>{
 })
 
 /* =========================
-   🔥 CONVERT + VORTEX
+   🔥 CONVERT (CLEAN)
 ========================= */
 async function convert(){
 
@@ -118,70 +130,6 @@ async function convert(){
 
  result.innerHTML="<p style='color:#ff4444'>transmuting...</p>"
 
- /* ===== overlay ===== */
- const overlay=document.createElement("div")
- overlay.style.position="fixed"
- overlay.style.inset=0
- overlay.style.background="radial-gradient(circle, rgba(0,0,0,.3) 0%, rgba(0,0,0,.95) 70%)"
- overlay.style.backdropFilter="blur(2px)"
- overlay.style.zIndex="9998"
- overlay.style.display="flex"
- overlay.style.alignItems="center"
- overlay.style.justifyContent="center"
- overlay.style.boxShadow="inset 0 0 200px black"
- document.body.appendChild(overlay)
-
- /* ===== vortex canvas ===== */
- const vcanvas=document.createElement("canvas")
- vcanvas.width=innerWidth
- vcanvas.height=innerHeight
- vcanvas.style.position="fixed"
- vcanvas.style.inset=0
- vcanvas.style.pointerEvents="none"
- overlay.appendChild(vcanvas)
-
- const vctx=vcanvas.getContext("2d")
- const cx=vcanvas.width/2
- const cy=vcanvas.height/2
-
- const vortex=Array.from({length:120}).map(()=>({
-  x:Math.random()*vcanvas.width,
-  y:Math.random()*vcanvas.height,
-  speed:.02+Math.random()*.04
- }))
-
- let running=true
-
- function vortexLoop(){
-  if(!running) return
-  vctx.clearRect(0,0,vcanvas.width,vcanvas.height)
-
-  vortex.forEach(p=>{
-    p.x+=(cx-p.x)*p.speed
-    p.y+=(cy-p.y)*p.speed
-
-    vctx.fillStyle="rgba(255,0,0,.5)"
-    vctx.fillRect(p.x,p.y,2,2)
-  })
-
-  requestAnimationFrame(vortexLoop)
- }
- vortexLoop()
-
- /* symbol */
- const symbol=document.createElement("div")
- symbol.textContent="⛧"
- symbol.style.fontSize="90px"
- symbol.style.color="rgba(255,0,0,.6)"
- symbol.style.animation="spin 2s linear infinite"
- overlay.appendChild(symbol)
-
- setTimeout(()=>{
-  running=false
-  overlay.remove()
- },2000)
-
- /* ===== conversion ===== */
  let converted=[]
 
  for(const file of files){
