@@ -12,18 +12,6 @@ const toFormat = document.getElementById("toFormat")
 let filesSelected=false
 
 /* =========================
-   🔥 AUDIO AUTOPLAY HACK
-========================= */
-const amb=document.getElementById("amb")
-
-if(amb){
- amb.volume=0.01
- amb.play().then(()=>{
-   setTimeout(()=>amb.volume=.18,2000)
- }).catch(()=>{})
-}
-
-/* =========================
    🔥 TOAST
 ========================= */
 function toast(msg,color="#00ff9c"){
@@ -84,7 +72,7 @@ setInterval(()=>{
 },4000)
 
 /* =========================
-   🔥 FILE HANDLE (NO PREVIEW)
+   🔥 FILE HANDLE
 ========================= */
 fileInput.addEventListener("change",handleFiles)
 
@@ -94,13 +82,9 @@ function handleFiles(){
 
     filesSelected=true
 
-    // botão mostra quantidade
     importBtn.textContent=`${files.length} SELECTED`
-
-    // texto abaixo
     result.innerHTML=`<p style="color:#ff4444;opacity:.7">${files.length} entity selected</p>`
 
-    // auto detect formato origem
     if(files[0]){
         const ext=files[0].name.split(".").pop().toLowerCase()
         if(fromFormat) fromFormat.value=ext
@@ -204,4 +188,60 @@ async function convert(){
 
  updateCounter(converted.length)
  toast("ritual completed")
+}
+
+/* =========================
+   🔥 RED PARTICLES
+========================= */
+
+const pCanvas=document.getElementById("particles")
+if(pCanvas){
+
+ const pCtx=pCanvas.getContext("2d")
+ let particles=[]
+
+ function resizeParticles(){
+  pCanvas.width=window.innerWidth
+  pCanvas.height=window.innerHeight
+ }
+ resizeParticles()
+ window.addEventListener("resize",resizeParticles)
+
+ class Particle{
+  constructor(){ this.reset() }
+
+  reset(){
+   this.x=Math.random()*pCanvas.width
+   this.y=Math.random()*pCanvas.height
+   this.vx=(Math.random()-.5)*.3
+   this.vy=(Math.random()-.5)*.3
+   this.size=Math.random()*2+1
+   this.alpha=Math.random()*.6+.2
+  }
+
+  update(){
+   this.x+=this.vx
+   this.y+=this.vy
+   if(this.x<0||this.x>pCanvas.width||this.y<0||this.y>pCanvas.height) this.reset()
+  }
+
+  draw(){
+   pCtx.beginPath()
+   pCtx.fillStyle=`rgba(255,0,0,${this.alpha})`
+   pCtx.shadowBlur=10
+   pCtx.shadowColor="red"
+   pCtx.arc(this.x,this.y,this.size,0,Math.PI*2)
+   pCtx.fill()
+  }
+ }
+
+ for(let i=0;i<70;i++) particles.push(new Particle())
+
+ function animateParticles(){
+  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height)
+  particles.forEach(p=>{p.update();p.draw()})
+  requestAnimationFrame(animateParticles)
+ }
+
+ animateParticles()
 }
