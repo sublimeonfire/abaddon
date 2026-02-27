@@ -13,44 +13,33 @@ align-items:flex-start;
 padding-top:80px;
 overflow-x:hidden;
 
-```
 cursor:url("data:image/svg+xml;utf8,\
-```
-
-<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'> <line x1='16' y1='0' x2='16' y2='32' stroke='red' stroke-width='2'/> <line x1='6' y1='10' x2='26' y2='10' stroke='red' stroke-width='2'/> </svg>") 16 16, auto;
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<line x1='16' y1='0' x2='16' y2='32' stroke='red' stroke-width='2'/>\
+<line x1='6' y1='10' x2='26' y2='10' stroke='red' stroke-width='2'/>\
+</svg>") 16 16, auto;
 }
 
-/* 🔥 HOVER CURSOR REACTIVE */
+/* 🔥 HOVER CURSOR */
 button:hover,
 .logo:hover,
 #result img:hover{
-cursor:url("data:image/svg+xml;utf8, <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'> <circle cx='16' cy='16' r='6' stroke='red' fill='none' stroke-width='2'/> </svg>") 16 16, auto;
+cursor:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'>\
+<circle cx='16' cy='16' r='6' stroke='red' fill='none' stroke-width='2'/>\
+</svg>") 16 16, auto;
 }
 
 /* 🔥 OCCULT CANVAS */
-#occultCanvas{
-position:fixed;
-inset:0;
-pointer-events:none;
-z-index:0;
-}
-
-/* 🔥 FILM GRAIN */
-#grain{
-position:fixed;
-inset:0;
-pointer-events:none;
-opacity:.08;
-z-index:2;
-}
+#occultCanvas{ position:fixed; inset:0; pointer-events:none; z-index:0; }
+#grain{ position:fixed; inset:0; pointer-events:none; opacity:.08; z-index:2; }
 
 /* 🔥 CRT */
 body::after{
 content:"";
 position:fixed;
 inset:0;
-background:
-repeating-linear-gradient(
+background:repeating-linear-gradient(
 0deg,
 rgba(255,255,255,.03),
 rgba(255,255,255,.03) 1px,
@@ -96,11 +85,7 @@ font-size:52px;
 text-shadow:0 0 25px red;
 animation:glitch 1.5s infinite;
 }
-@keyframes fade{
-0%{opacity:1}
-85%{opacity:1}
-100%{opacity:0;visibility:hidden}
-}
+@keyframes fade{0%,85%{opacity:1}100%{opacity:0;visibility:hidden}}
 @keyframes glitch{
 0%{transform:translate(0)}
 20%{transform:translate(-2px,2px)}
@@ -110,7 +95,7 @@ animation:glitch 1.5s infinite;
 100%{transform:translate(0)}
 }
 
-/* 🔥 CONTAINER PORTAL */
+/* 🔥 CONTAINER */
 .container{
 text-align:center;
 padding:55px 40px 45px;
@@ -144,13 +129,8 @@ max-width:100%;
 margin-bottom:15px;
 animation:float 6s ease-in-out infinite;
 }
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-6px)}
-100%{transform:translateY(0)}
-}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
 
-/* 🔥 LORE */
 #lore{
 position:absolute;
 top:-25px;
@@ -165,13 +145,8 @@ white-space:nowrap;
 .logo-wrap:hover #lore{ opacity:1; }
 
 /* 🔥 BLOOD */
-.blood{
-position:absolute;
-inset:0;
-pointer-events:none;
-}
-.blood::before,
-.blood::after{
+.blood{ position:absolute; inset:0; pointer-events:none; }
+.blood::before,.blood::after{
 content:"";
 position:absolute;
 width:4px;
@@ -182,52 +157,64 @@ animation:drip 6s infinite;
 }
 .blood::before{left:6px;top:0}
 .blood::after{right:10px;top:0;animation-delay:3s}
+@keyframes drip{0%{height:0;opacity:0}30%{opacity:.8}70%{height:20px}100%{height:0;opacity:0}}
 
-@keyframes drip{
-0%{height:0;opacity:0}
-30%{opacity:.8}
-70%{height:20px}
-100%{height:0;opacity:0}
-}
-
-/* 🔥 FORMAT SELECT */
-.format-select{
+/* =========================
+   🔥 NEW FORMAT ROW
+========================= */
+.format-row{
 display:flex;
+gap:12px;
 justify-content:center;
-margin-bottom:20px;
+align-items:center;
+margin-bottom:15px;
 }
-.format-select select{
+
+.format-row select{
 background:black;
 border:1px solid red;
 color:red;
-padding:8px;
+padding:10px 16px;
 font-family:'VT323', monospace;
+font-size:22px;
+min-width:90px;
 }
 
-/* 🔥 RESIZE SLIDER REMOVIDO DEFINITIVO */
-#resize,
-input[type="range"]{
-display:none !important;
-visibility:hidden !important;
-opacity:0 !important;
-height:0 !important;
-pointer-events:none !important;
+.arrow{
+color:#ff0000;
+font-size:28px;
+text-shadow:0 0 8px red;
 }
 
-/* 🔥 LOGS */
-#logs{
-margin-top:10px;
-font-size:14px;
-color:#ff4444;
-opacity:.6;
+/* =========================
+   🔥 UPLOAD BOX
+========================= */
+.upload-box{
+display:flex;
+gap:10px;
+justify-content:center;
+margin-top:12px;
+padding:8px;
+transition:.2s;
 }
 
-/* 🔥 PREVIEW */
+/* =========================
+   🔥 PREVIEW GRID
+========================= */
+#result div{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+gap:10px;
+margin-top:15px;
+}
+
 #result img{
 image-rendering:pixelated;
 transition:.2s;
 border:1px solid #300;
 box-shadow:0 0 10px #300;
+width:100%;
+object-fit:cover;
 }
 #result img:hover{
 transform:scale(1.05);
@@ -244,11 +231,25 @@ cursor:pointer;
 transition:.2s;
 font-weight:bold;
 font-family:'VT323', monospace;
+font-size:20px;
+letter-spacing:1px;
 }
 button:hover{
 background:red;
 color:black;
 box-shadow:0 0 15px red;
+}
+button:disabled{
+opacity:.4;
+cursor:not-allowed;
+}
+
+/* 🔥 LOGS */
+#logs{
+margin-top:10px;
+font-size:14px;
+color:#ff4444;
+opacity:.6;
 }
 
 /* 🔥 COUNTER */
@@ -263,8 +264,12 @@ color:#ff0000;
 text-shadow:0 0 8px red;
 }
 
-/* 🔥 SPIN */
-@keyframes spin{
-from{transform:translate(-50%,-50%) rotate(0)}
-to{transform:translate(-50%,-50%) rotate(360deg)}
+/* 🔥 REMOVE SLIDER */
+#resize,
+input[type="range"]{
+display:none !important;
+visibility:hidden !important;
+opacity:0 !important;
+height:0 !important;
+pointer-events:none !important;
 }
